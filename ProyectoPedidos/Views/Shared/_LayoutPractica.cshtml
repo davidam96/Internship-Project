@@ -1,22 +1,24 @@
 ﻿<!DOCTYPE html>
 
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @* -- Bootstrap CSS -- *@
-    <link href="~/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     @* -- Mi CSS -- *@
-    <link href="~/Content/MisEstilos/EstilosCliente.css" rel="stylesheet"/>
+    <link href="~/Content/MisEstilos/EstilosCliente.css" rel="stylesheet" />
     @* -- JQuery -- *@
     <script src="~/Scripts/jquery-3.4.1.js"></script>
     @* -- Bootstrap JS -- *@
     <script src="~/Scripts/bootstrap.js"></script>
     @* -- Mi JS -- *@
-    <script src="~/Scripts/MisScripts/ScriptsCliente.js"></script>
+    <script src="~/Scripts/MisScripts/ScriptsLayout.js"></script>
 </head>
-<body @*onload="alert('Body cargado'); cargarCombo();*@>
+
+<body @* onload="alert('Body cargado'); cargarCombo(); *@>
 
 
     @* -- NAVBAR CABECERA -- *@
@@ -34,9 +36,38 @@
         @* Contenido colapsable *@
         <div class="collapse navbar-collapse" id="collapsibleNavId">
 
-            @* Botones de Login / Logout aqui debajo mediante Ajax...*@
-            @Html.Partial("Login")
+            @* Botones de Login / Logout aqui debajo mediante Ajax...
+                @Html.Partial("Login")
+            *@
 
+            @* Botones Login *@
+            <div id="login" class="row ml-md-auto mt-4 my-md-2">
+                <div class="col-12 mb-1 d-flex justify-content-md-end">
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#modalLogin" data-es-cliente="1">
+                        Login Cliente
+                    </button>
+                </div>
+
+                <div class="col-12 mt-1 d-flex justify-content-md-end">
+                    <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#modalLogin" data-es-cliente="0">
+                        Login Empleado
+                    </button>
+                </div>
+            </div>
+
+            @* Boton Logout *@
+            <div id="logout" class="row ml-sm-auto mt-4 mt-md-2" style="display: none;">
+                <div class="col-12">
+                    <div class="d-flex justify-content-md-center">
+                        <button type="button" class="btn btn-danger mb-2" onclick="displayLogin()">
+                            Logout
+                        </button>
+                    </div>
+                    <p id="nombreUsuario"></p>
+                </div>
+            </div>
 
         </div>
     </nav>
@@ -80,8 +111,9 @@
 
     <div id="renderBody">
         @* Aqui se carga la vista que decidas,
-            en este caso "LoginConLayout.cshtml" *@
+            en este caso "VistaCliente.cshtml" *@
         @RenderBody()
     </div>
+
 </body>
 </html>

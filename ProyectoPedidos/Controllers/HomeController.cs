@@ -13,16 +13,6 @@ namespace ProyectoPedidos.Controllers
         {   
             ViewBag.Titulo = "Login";
 
-            //Mantenemos en la sesión el login, por si
-            //el usuario se había logueado previamente.
-            //if (Session["HayLogin"] != null && Session["HayLogin"].ToString().Equals("1"))
-            //{
-            //    Response.Cookies.Add(new HttpCookie("EsLoginValido", "1"));
-            //} else
-            //{
-            //    Response.Cookies.Add(new HttpCookie("EsLoginValido", "0"));
-            //}
-
             return View("LoginConLayout");
         }
 
@@ -56,7 +46,7 @@ namespace ProyectoPedidos.Controllers
             {
                 ViewBag.TextoError = "Usuario o contraseña incorrectos.";
 
-                Response.Cookies.Add(new HttpCookie("EsLoginValido", "0"));
+                Response.Cookies.Add(new HttpCookie("HayLogin", "0"));
 
                 return View("LoginConLayout");
             }
@@ -64,7 +54,7 @@ namespace ProyectoPedidos.Controllers
             //Creamos varias cookies en el servidor que enviaremos al cliente
             Response.Cookies.Add(new HttpCookie("CodigoUsuario", cliente.Codigo.ToString()));
             Response.Cookies.Add(new HttpCookie("NombreUsuario", cliente.NombreCliente + " " + cliente.ApellidosCliente));
-            Response.Cookies.Add(new HttpCookie("EsLoginValido", "1"));
+            Response.Cookies.Add(new HttpCookie("HayLogin", "1"));
 
             //Distinguimos entre si se loguea un cliente o un empleado
             if (esCliente.Equals("1"))
@@ -76,24 +66,6 @@ namespace ProyectoPedidos.Controllers
             }
 
             return View("VistaCliente");
-        }
-
-        public ActionResult RenderLogin()
-        {
-            //El problema es que estás llamando a este método desde un
-            //hilo secundario con Ajax, por eso la sesión no se guarda.
-            //Session["HayLogin"] = "0";
-
-            return PartialView("Login");
-        }
-
-        public ActionResult RenderLogout()
-        {
-            //El problema es que estás llamando a este método desde un
-            //hilo secundario con Ajax, por eso la sesión no se guarda.
-            //Session["HayLogin"] = "1";
-
-            return PartialView("Logout");
         }
 
         public ActionResult CargarProductos()

@@ -1,5 +1,4 @@
 ﻿// 1) Definicion de variables globales
-var cookies = {};
 var productos;
 var lineasDetalle = [];
 
@@ -13,37 +12,34 @@ $(document).ready(function () {
 
     //Rellenamos el combo con los productos mediante Ajax
     cargarCombo();
-
-    //Cuando abrimos la modal con el formulario del login
-    onShowModalLogin();
 });
 
+
+// 3) Resto de funciones
 function gestionarCookies() {
     
     var cAux = document.cookie.split("; ");
+    var cookies = {};
 
     cAux.forEach(function (cookie) {
         let info = cookie.split("=");
         cookies[info[0]] = info[1];
     });
 
-    var esLoginValido = Number.parseInt(cookies.EsLoginValido);
-    if (esLoginValido) {
+    if (cookies.HayLogin === "1") {
         let esCliente = true;
         switch (cookies.EsCliente) {
             case "0":
-                renderLogout(!esCliente);
+                displayLogout(!esCliente, cookies.NombreUsuario);
                 break;
             case "1":
-                renderLogout(esCliente);
+                displayLogout(esCliente, cookies.NombreUsuario);
                 break;
         }
     } else {
-        renderLogin();
+        displayLogin();
     }
 }
-
-// 3) Resto de funciones
 
 function cargarCombo() {
 
@@ -130,49 +126,21 @@ function cargaCombo() {
     $("#cmbProductos").html(cad);
 }
 
-function onShowModalLogin() {
-    $('#modalLogin').on("show.bs.modal", (event) => {
-        var button = $(event.relatedTarget);
-        var esCliente = button.data('esCliente');
-        if (esCliente) {
-            $('#modalLogin .modal-title').text("Login Cliente");
-            $('#modalLogin .modal-header').removeClass("bg-success");
-            $('#modalLogin .modal-header').addClass("bg-primary");
-            $('#esCliente').attr("value", "1");
-        } else {
-            $('#modalLogin .modal-title').text("Login Empleado");
-            $('#modalLogin .modal-header').removeClass("bg-primary");
-            $('#modalLogin .modal-header').addClass("bg-success");
-            $('#esCliente').attr("value", "0");
-        }
-    });
+function displayLogout(esCliente, nombreUsuario) {
+    $("#login").css("display", "none");
+    $("#logout").css("display", "");
+
+    if (esCliente) {
+        $('#nombreUsuario').html("<b>Cliente:</b> <i>" + nombreUsuario + "</i>");
+    } else {
+        $('#nombreUsuario').html("<b>Empleado:</b> <i>" + nombreUsuario + "</i>");
+    }
 }
 
-function renderLogout(esCliente) {
-    $.ajax({
-        type: "GET",
-        url: "/Home/RenderLogout",
-        success: function (info) {
-            $('div[class*="navbar-collapse"]').html(info);
-            if (esCliente) {
-                $('#nombreUsuario').html("<b>Cliente:</b> <i>" + cookies.NombreUsuario + "</i>");
-            } else {
-                $('#nombreUsuario').html("<b>Empleado:</b> <i>" + cookies.NombreUsuario + "</i>");
-            }
-        }
-    });
-}
-
-function renderLogin() {
-    $('#renderBody').html("");
-
-    $.ajax({
-        type: "GET",
-        url: "/Home/RenderLogin",
-        success: function (info) {
-            $('div[class*="navbar-collapse"]').html(info);
-        }
-    });
+function displayLogin() {
+    $("#login").css("display", "");
+    $("#logout").css("display", "none");
+    $("#renderBody").html("");
 }
 
 function mensaje() {
