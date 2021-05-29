@@ -1,0 +1,37 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*<title>LoginSinLayout</title>  ==>  No le llega al cliente*@
+    <!-- <title>LoginSinLayout</title> ==> Si le llega al cliente -->
+    <title>@ViewBag.Titulo</title>
+</head>
+<body>
+    <div>
+
+        @* -- FORMULARIO LOGIN CLIENTE -- *@
+        <form method="post" action="Home/ValidarCliente">
+            <fieldset>
+                <legend>Login Cliente</legend>
+                <label>Mail Cliente</label>
+                <input type="text" id="txtMailCliente" name="txtMail" />
+                <br />
+                <br />
+                <label>Contraseña</label>
+                <input type="text" id="txtPasswordCliente" name="txtPassword" />
+                <br />
+                <br />
+                <input type="submit" value="Validar" />
+            </fieldset>
+        </form>
+        @* -- FORMULARIO LOGIN CLIENTE -- *@
+
+    </div>
+</body>
+</html>

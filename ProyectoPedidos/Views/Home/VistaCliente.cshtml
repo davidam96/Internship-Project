@@ -1,0 +1,28 @@
+﻿
+<script src="~/Scripts/MisScripts/ScriptsCliente.js"></script>
+
+@{
+    Layout = "~/Views/Shared/_LayoutPractica.cshtml";
+    ViewBag.Title = "VistaCliente";
+}
+
+<h2>Pedidos cliente</h2>
+
+<select id="cmbProductos">
+    <option value="ProdA">Producto A (5€)</option>
+    <option value="ProdB">Producto B (14.50€)</option>
+    <option value="ProdC">Producto C (7.39€)</option>
+</select>
+
+Unidades
+<input id="txtUnidades" />
+<button id="btnAnadir">Añadir</button>
+
+<br />
+
+<button onclick="ContenidoCombo()">Contenido combo</button>
+
+<script>
+    mensaje();
+</script>
+

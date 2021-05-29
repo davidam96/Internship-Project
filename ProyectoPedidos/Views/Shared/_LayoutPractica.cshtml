@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @* -- Bootstrap CSS -- *@
+    <link href="~/Content/bootstrap.css" rel="stylesheet"/>
+    @* -- Mi CSS -- *@
+    <link href="~/Content/MisEstilos/EstilosCliente.css" rel="stylesheet"/>
+    @* -- JQuery -- *@
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    @* -- Bootstrap JS -- *@
+    <script src="~/Scripts/bootstrap.js"></script>
+    @* -- Mi JS -- *@
+    <script src="~/Scripts/MisScripts/ScriptsCliente.js"></script>
+</head>
+<body @*onload="alert('Body cargado'); cargarCombo();*@>
+
+
+    @* -- NAVBAR CABECERA -- *@
+    <nav class="navbar navbar-expand-sm navbar-light bg-cabecera rounded m-1 px-4">
+
+        @* Logo *@
+        <img src="~/Content/Imagenes/logo_adentia.png" alt="Logo adentia" />
+
+        @* Boton alternar colapso *@
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+                aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        @* Contenido colapsable *@
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+
+            @* Botones de Login / Logout aqui debajo mediante Ajax...*@
+            @Html.Partial("Login")
+
+
+        </div>
+    </nav>
+    @* -- NAVBAR CABECERA -- *@
+
+
+    @* -- MODAL LOGIN -- *@
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-light">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="/Home/ValidarLogin" method="POST">
+                    <div class="modal-body row">
+                        <div class="form-group col-12 d-flex justify-content-around">
+                            <label for="recipient-name" class="col-form-label mr-2">Mail:</label>
+                            <input type="text" class="form-control" name="txtMail" />
+                        </div>
+                        <div class="form-group col-12 d-flex justify-content-center">
+                            <label for="message-text" class="col-form-label mr-2">Contraseña:</label>
+                            <input type="text" class="form-control" name="txtPassword" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="esCliente" name="esCliente" value="" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    @* -- MODAL LOGIN -- *@
+
+
+    <div id="renderBody">
+        @* Aqui se carga la vista que decidas,
+            en este caso "LoginConLayout.cshtml" *@
+        @RenderBody()
+    </div>
+</body>
+</html>
