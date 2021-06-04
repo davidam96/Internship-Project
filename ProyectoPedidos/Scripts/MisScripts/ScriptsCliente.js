@@ -1,5 +1,5 @@
 ﻿// 1) Definicion de variables globales
-var productos;
+var productos = [];
 var lineasDetalle = [];
 
 
@@ -191,6 +191,41 @@ function ContenidoCombo() {
         cad += index + " - " + $(elemento).text() + " (" + $(elemento).val() + ")\n";
     });
     alert(cad);
+}
+
+function nuevoProducto() {
+
+    //Recogemos la cantidad escrita en el input "txtUnidades"
+    var cantidad = $("#txtUnidades").val();
+    if (cantidad === undefined || cantidad.trim() === "") {
+        alert("Introduzca unidades");
+        return;
+    }
+
+    //Comprobamos que la cantidad introducida sea válida
+    var unidades = parseInt(cantidad);
+    if (Number.isNaN(unidades)) {
+        alert("Unidades incorrectas");
+    }
+
+    //Creamos una línea de detalle con el producto escogido
+    //y la cantidad escrita
+    var codigoProducto = $("#cmbProductos").val();
+    productos.some((producto) => {
+        if (producto.Codigo === codigoProducto) {
+            var lineaDetalle = {};
+            lineaDetalle.CodigoProducto = producto.Codigo;
+            lineaDetalle.Unidades = unidades;
+            lineaDetalle.PrecioVenta = producto.PrecioVenta;
+            lineasDetalle.push(lineaDetalle);
+            return true;
+        }
+        return false;
+    });
+
+    //Actualizamos la info de todo el pedido
+
+
 }
 
 function miPrueba() {
