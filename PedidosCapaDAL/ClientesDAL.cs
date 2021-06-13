@@ -21,11 +21,11 @@ namespace PedidosCapaDAL
             //lo destruye de manera casi inmediata (ticks de reloj ~ x milisegundos).
             using (SqlConnection cn = new SqlConnection())
             {
-                cn.ConnectionString = "data source=DESKTOP-4RNMN7I; initial catalog=Beca2021; User ID=UsrBeca; Password=1234";
+                cn.ConnectionString = Auxiliar.CadenaConexion;
 
                 //SqlCommand cmd = new SqlCommand(); 
                 //cmd.Connection = cn;
-                var cmd = cn.CreateCommand();
+                var cmd = cn.CreateCommand(); // --> Las dos líneas de arriba, en una sola.
 
                 //cmd.CommandType = CommandType.Text;  // --> opción por defecto
                 //cmd.CommandText = "SELECT * FROM CLIENTES WHERE Mail = '" + mail + "'";

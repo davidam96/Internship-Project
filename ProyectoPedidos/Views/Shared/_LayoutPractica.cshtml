@@ -9,7 +9,7 @@
     @* -- Bootstrap CSS -- *@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     @* -- Mi CSS -- *@
-    <link href="~/Content/MisEstilos/EstilosLayout.css" rel="stylesheet" />
+    <link href="~/Content/MisEstilos/EstilosCliente.css" rel="stylesheet" />
     @* -- JQuery -- *@
     <script src="~/Scripts/jquery-3.4.1.js"></script>
     @* -- Bootstrap JS -- *@
@@ -107,10 +107,16 @@
     @* -- MODAL LOGIN -- *@
 
 
-    <div id="renderBody">
-        @* Aqui se carga la vista que decidas,
-            en este caso "VistaCliente.cshtml" *@
-        @RenderBody()
+    <div id="renderBody" class="container">
+        <div class="row mx-auto my-4">
+            <div class="col-12 text-center">
+
+                @* Aqui se carga la vista que decidas,
+                    en este caso "VistaCliente.cshtml" *@
+                @RenderBody()
+
+            </div>
+        </div>
     </div>
 
 </body>

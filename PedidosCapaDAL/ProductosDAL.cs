@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace PedidosCapaDAL
 {
@@ -28,9 +29,11 @@ namespace PedidosCapaDAL
             //}
 
             SqlConnection cn = new SqlConnection();
-            cn.ConnectionString = "data source=DESKTOP-4RNMN7I; initial catalog=Beca2021; User ID=UsrBeca; Password=1234";
+
+            //cn.ConnectionString = "data source=DESKTOP-4RNMN7I; initial catalog=Beca2021; User ID=UsrBeca; Password=1234";
             //cn.ConnectionString = "data source=(local); initial catalog=Beca2021; User ID=UsrBeca; Password=1234";
             //cn.ConnectionString = "data source=.; initial catalog=Beca2021; User ID=UsrBeca; Password=1234";
+            cn.ConnectionString = Auxiliar.CadenaConexion;
 
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;

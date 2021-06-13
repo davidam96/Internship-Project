@@ -16,6 +16,20 @@ namespace ProyectoPedidos.Controllers
             return View("LoginConLayout");
         }
 
+        public ActionResult About()
+        {
+            ViewBag.Title = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Title = "Your contact page.";
+
+            return View();
+        }
+
         //En vez de poner Request.getParameter() para recuperar datos de un formulario,
         //puedes hacerlo añadiendo parametros string al metodo y se te rellenan
         //automáticamente al enviar el formulario desde el cliente al servidor.

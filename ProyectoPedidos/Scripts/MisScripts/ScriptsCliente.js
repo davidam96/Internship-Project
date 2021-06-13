@@ -191,10 +191,11 @@ function nuevoProducto() {
     var codigoProducto = $("#cmbProductos").val();
     productos.some((producto) => {
         if (producto.Codigo === codigoProducto) {
-            var lineaDetalle = {};
-            lineaDetalle.CodigoProducto = producto.Codigo;
-            lineaDetalle.Unidades = unidades;
-            lineaDetalle.PrecioVenta = producto.PrecioVenta;
+            let lineaDetalle = {};
+            lineaDetalle.codigoProducto = producto.Codigo;
+            lineaDetalle.descripcion = producto.Descripcion;
+            lineaDetalle.unidades = unidades;
+            lineaDetalle.precioVenta = producto.PrecioVenta;
             lineasDetalle.push(lineaDetalle);
             return true;
         }
@@ -202,8 +203,21 @@ function nuevoProducto() {
     });
 
     //Actualizamos la info de todo el pedido
-
-
+    var cad = "<tr><td>Codigo</td><td>Descripcion</td><td>Unidades</td><td>Precio unidad</td><td>Precio total</td></tr>";
+    var total = 0;
+    lineasDetalle.forEach((lineaDetalle) => {
+        cad += "<tr>";
+        cad += "<td>" + lineaDetalle.codigoProducto + "</td>";
+        cad += "<td>" + lineaDetalle.descripcion + "</td>";
+        cad += "<td>" + lineaDetalle.unidades + "</td>";
+        cad += "<td>" + lineaDetalle.precioVenta + "</td>";
+        let subtotal = Math.trunc(parseInt(lineaDetalle.unidades) * parseFloat(lineaDetalle.precioVenta), 2);
+        cad += "<td>" + subtotal + "</td>";
+        total += subtotal;
+        cad += "</tr>";
+    });
+    cad += '<tr><td colspan="5">Total... ' + total + "</td></tr>";
+    $("#tablaDetalle").html(cad);
 }
 
 function miPrueba() {
