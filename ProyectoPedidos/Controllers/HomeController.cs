@@ -35,10 +35,10 @@ namespace ProyectoPedidos.Controllers
         //En vez de poner Request.getParameter() para recuperar datos de un formulario,
         //puedes hacerlo añadiendo parametros string al metodo y se te rellenan
         //automáticamente al enviar el formulario desde el cliente al servidor.
-        public ActionResult ValidarLogin(string txtMail, string txtPassword, string esCliente)
+        public ActionResult ValidarCliente(string txtMail, string txtPassword, string esCliente)
         {
 
-            var cliente = ConectorAPI.ValidarLogin(txtMail, txtPassword);
+            var cliente = ConectorAPI.ValidarCliente(txtMail, txtPassword);
 
             //Comprobamos que el cliente no sea nulo,
             //pues de lo contrario el loguin no es válido.
@@ -68,6 +68,7 @@ namespace ProyectoPedidos.Controllers
             return View("VistaCliente");
         }
 
+        [OutputCache(Duration = 10)]
         public ActionResult CargarProductos()
         {
             try

@@ -157,6 +157,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\GeneralController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -252,6 +253,10 @@
     <ProjectReference Include="..\ModeloDatos\ModeloDatos.csproj">
       <Project>{94145d7f-0a14-47d1-a88c-348a962fe87a}</Project>
       <Name>ModeloDatos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PedidosCapaBL\PedidosCapaBL.csproj">
+      <Project>{34cd3d01-6d53-488b-a2cf-b9fd23f6317c}</Project>
+      <Name>PedidosCapaBL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

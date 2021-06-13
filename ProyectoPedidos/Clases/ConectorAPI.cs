@@ -190,7 +190,7 @@ namespace ProyectoPedidos.Clases
         //    }
         //}
 
-        public static Cliente ValidarLogin(string txtMail, string txtPassword)
+        public static Cliente ValidarCliente(string txtMail, string txtPassword)
         {
             
             Dictionary<string, string> infoConexion = new Dictionary<string, string>();
@@ -202,32 +202,21 @@ namespace ProyectoPedidos.Clases
             string uri = "api/General/ValidarCliente";
             HttpResponseMessage response = RespuestaPOST(uri, infoConexion);
             if (response.IsSuccessStatusCode)
-            {
                 cliente = response.Content.ReadAsAsync<Cliente>().Result;
-            }
             else
-            {
                 throw new HttpRequestException(response.ReasonPhrase);
-            }
 
             return cliente;
         }
 
         public static List<Producto> ObtenerProductos()
         {
-
-            List<Producto> Productos = new List<Producto>();
-            var rnd = new Random();
-            Producto p;
-            for (int i = 1; i <= 5; i++)
-            {
-                p = new Producto();
-                p.Codigo = "Prod" + i;
-                p.Descripcion = "Producto " + i;
-                p.PrecioVenta = (float)Math.Round(rnd.NextDouble() * 1000, 2);
-                Productos.Add(p);
-            }
-            return Productos;
+            string uri = "api/Productos/ObtenerProductos";
+            HttpResponseMessage response = RespuestaGET(uri);
+            if (response.IsSuccessStatusCode)
+                return response.Content.ReadAsAsync<List<Producto>>().Result;
+            else
+                throw new HttpRequestException(response.ReasonPhrase);
         }
 
         #endregion

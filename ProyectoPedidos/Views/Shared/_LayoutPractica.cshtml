@@ -36,10 +36,6 @@
         @* Contenido colapsable *@
         <div class="collapse navbar-collapse" id="collapsibleNavId">
 
-            @* Botones de Login / Logout aqui debajo mediante Ajax...
-                @Html.Partial("Login")
-            *@
-
             @* Botones Login *@
             <div id="login" class="row ml-md-auto mt-4 my-md-2">
                 <div class="col-12 mb-1 d-flex justify-content-md-end">
@@ -85,7 +81,7 @@
                     </button>
                 </div>
 
-                <form action="/Home/ValidarLogin" method="POST">
+                <form action="/Home/ValidarCliente" method="POST">
                     <div class="modal-body row">
                         <div class="form-group col-12 d-flex justify-content-around">
                             <label for="recipient-name" class="col-form-label mr-2">Mail:</label>
