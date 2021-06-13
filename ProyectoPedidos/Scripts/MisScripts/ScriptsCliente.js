@@ -26,19 +26,8 @@ function gestionarCookies() {
         cookies[info[0]] = info[1];
     });
 
-    if (cookies.HayLogin === "1") {
-        let esCliente = true;
-        switch (cookies.EsCliente) {
-            case "0":
-                displayLogout(!esCliente, cookies.NombreUsuario);
-                break;
-            case "1":
-                displayLogout(esCliente, cookies.NombreUsuario);
-                break;
-        }
-    } else {
-        displayLogin();
-    }
+    if (cookies.CodigoUsuario != -1)
+        displayLogout(cookies.NombreUsuario);
 }
 
 function cargarCombo() {
@@ -126,21 +115,10 @@ function cargaCombo() {
     $("#cmbProductos").html(cad);
 }
 
-function displayLogout(esCliente, nombreUsuario) {
+function displayLogout(nombreUsuario) {
     $("#login").css("display", "none");
     $("#logout").css("display", "");
-
-    if (esCliente) {
-        $('#nombreUsuario').html("<b>Cliente:</b> <i>" + nombreUsuario + "</i>");
-    } else {
-        $('#nombreUsuario').html("<b>Empleado:</b> <i>" + nombreUsuario + "</i>");
-    }
-}
-
-function displayLogin() {
-    $("#login").css("display", "");
-    $("#logout").css("display", "none");
-    $("#renderBody").html("");
+    $('#nombreUsuario').html("<b>Cliente:</b> <i>" + nombreUsuario + "</i>");
 }
 
 function mensaje() {

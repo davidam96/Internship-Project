@@ -24,6 +24,10 @@ function gestionarCookies() {
         let info = cookie.split("=");
         cookies[info[0]] = info[1];
     });
+
+    if (cookies.CodigoUsuario === undefined) {
+        displayLogin();
+    }
 }
 
 function onShowModalLogin() {
@@ -42,4 +46,10 @@ function onShowModalLogin() {
             $('#esCliente').attr("value", "0");
         }
     });
+}
+
+function displayLogin() {
+    $("#login").css("display", "");
+    $("#logout").css("display", "none");
+    $('#nombreUsuario').html("");
 }

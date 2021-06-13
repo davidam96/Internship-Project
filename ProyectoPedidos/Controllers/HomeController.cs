@@ -16,26 +16,10 @@ namespace ProyectoPedidos.Controllers
             return View("LoginConLayout");
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        //MIS METODOS
-
         //En vez de poner Request.getParameter() para recuperar datos de un formulario,
         //puedes hacerlo añadiendo parametros string al metodo y se te rellenan
         //automáticamente al enviar el formulario desde el cliente al servidor.
-        public ActionResult ValidarCliente(string txtMail, string txtPassword, string esCliente)
+        public ActionResult ValidarCliente(string txtMail, string txtPassword)
         {
 
             var cliente = ConectorAPI.ValidarCliente(txtMail, txtPassword);
@@ -45,27 +29,32 @@ namespace ProyectoPedidos.Controllers
             if (cliente == null)
             {
                 ViewBag.TextoError = "Usuario o contraseña incorrectos.";
-
-                Response.Cookies.Add(new HttpCookie("HayLogin", "0"));
-
                 return View("LoginConLayout");
             }
 
             //Creamos varias cookies en el servidor que enviaremos al cliente
             Response.Cookies.Add(new HttpCookie("CodigoUsuario", cliente.Codigo.ToString()));
             Response.Cookies.Add(new HttpCookie("NombreUsuario", cliente.NombreCliente + " " + cliente.ApellidosCliente));
-            Response.Cookies.Add(new HttpCookie("HayLogin", "1"));
-
-            //Distinguimos entre si se loguea un cliente o un empleado
-            if (esCliente.Equals("1"))
-            {
-                Response.Cookies.Add(new HttpCookie("EsCliente", "1"));
-            } else
-            {
-                Response.Cookies.Add(new HttpCookie("EsCliente", "0"));
-            }
 
             return View("VistaCliente");
+        }
+
+        public ActionResult LogoutCliente()
+        {
+            //Para eliminar cookies del cliente, ESTO NO FUNCIONA:
+            //Response.Cookies.Remove("CodigoUsuario");
+
+            //Esta es la única manera de hacer que una cookie
+            //del cliente (el navegador) se pueda eliminar.
+            var c1 = Request.Cookies["CodigoUsuario"];
+            c1.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(c1);
+
+            var c2 = new HttpCookie("NombreUsuario");
+            c1.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(c2);
+
+            return View("LoginConLayout");
         }
 
         [OutputCache(Duration = 10)]

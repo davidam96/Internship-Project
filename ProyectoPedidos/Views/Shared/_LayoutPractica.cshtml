@@ -57,9 +57,11 @@
             <div id="logout" class="row ml-sm-auto mt-4 mt-md-2" style="display: none;">
                 <div class="col-12">
                     <div class="d-flex justify-content-md-center">
-                        <button type="button" class="btn btn-danger mb-2" onclick="displayLogin()">
-                            Logout
-                        </button>
+                        <form method="post" action="/Home/LogoutCliente">
+                            <button type="submit" class="btn btn-danger mb-2">
+                                Logout
+                            </button>
+                        </form>
                     </div>
                     <p id="nombreUsuario"></p>
                 </div>
