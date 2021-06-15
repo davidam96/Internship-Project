@@ -123,12 +123,18 @@ namespace ProyectoPedidos.Controllers
             }
         }
 
-        public ActionResult ObtenerPedidos(int codigoCliente)
+        public ActionResult ObtenerPedidos(int codigoCliente, DateTime? fechaDesde, DateTime? fechaHasta)
         {
             try
             {
                 Dictionary<string, string> datos = new Dictionary<string, string>();
+
                 datos.Add("CodigoCliente", codigoCliente.ToString());
+
+                if (fechaDesde.HasValue)
+                    datos.Add("FechaDesde", fechaDesde.ToString());
+                if (fechaDesde.HasValue)
+                    datos.Add("FechaHasta", fechaHasta.ToString());
 
                 Pedido[] p = ConectorAPI.ObtenerPedidos(datos);
 

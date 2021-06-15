@@ -109,17 +109,42 @@ namespace PedidosCapaDAL
                 cmd.CommandType = CommandType.Text;
 
                 cmd.CommandText = "SELECT * FROM Pedidos";
-
                 string filtro = "";
+
                 if (datos.ContainsKey("CodigoCliente"))
                 {
                     if (filtro == "")
-                        filtro = " WHERE ";
+                        filtro += " WHERE ";
 
                     filtro += " CodigoCliente = @codigoCliente";
                     cmd.Parameters.AddWithValue("@codigoCliente", Convert.ToInt32(datos["CodigoCliente"]));
 
                 }
+
+                if (datos.ContainsKey("FechaDesde"))
+                {
+                    if (filtro == "")
+                        filtro += " WHERE ";
+                    else
+                        filtro += " AND ";
+
+                    filtro += " CodigoCliente = @codigoCliente";
+                    cmd.Parameters.AddWithValue("@codigoCliente", Convert.ToDateTime(datos["FechaDesde"]));
+
+                }
+
+                if (datos.ContainsKey("FechaHasta"))
+                {
+                    if (filtro == "")
+                        filtro += " WHERE ";
+                    else
+                        filtro += " AND ";
+
+                    filtro += " FechaPedido <= @fechaHasta";
+                    cmd.Parameters.AddWithValue("@fechaHasta", Convert.ToDateTime(datos["FechaHasta"]));
+
+                }
+
                 cmd.CommandText += filtro;
 
                 cn.Open();

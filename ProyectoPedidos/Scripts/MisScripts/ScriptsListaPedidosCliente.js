@@ -7,11 +7,30 @@ $(document).ready(function () {
 
 });
 
-function CargarPedidos() {
+function FiltrarFechaPedidos() {
+    let fDesde = $("#fechaDesde").val();
+    let fHasta = $("#fechaHasta").val();
+
+    if (fDesde !== undefined || fHasta !== undefined) {
+        let datos = {};
+        if (fDesde !== "")
+            datos.FechaDesde = fDesde;
+        if (fHasta !== "")
+            datos.FechaHasta = fHasta;
+        CargarPedidos(datos);
+    }
+    else {
+        alert("Seleccione al menos una fecha.");
+    }
+}
+
+function CargarPedidos(datos) {
 
     var destino = '/Home/ObtenerPedidos';
 
-    var datos = {};
+    if (datos === undefined)
+        var datos = {};
+
     datos.codigoCliente = cookies.CodigoCliente;
 
     $.ajax({
