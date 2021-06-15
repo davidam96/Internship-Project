@@ -191,8 +191,7 @@ namespace ProyectoPedidos.Clases
         //}
 
         public static Cliente ValidarCliente(string txtMail, string txtPassword)
-        {
-            
+        {  
             Dictionary<string, string> infoConexion = new Dictionary<string, string>();
             infoConexion.Add("txtMail", txtMail);
             infoConexion.Add("txtPassword", txtPassword);
@@ -217,6 +216,34 @@ namespace ProyectoPedidos.Clases
                 return response.Content.ReadAsAsync<List<Producto>>().Result;
             else
                 throw new HttpRequestException(response.ReasonPhrase);
+        }
+
+        public static Pedido HacerPedido(Dictionary<string, object> datos)
+        {
+            Pedido pedido = null;
+
+            string uri = "api/General/CrearPedido";
+            HttpResponseMessage response = RespuestaPOST(uri, datos);
+            if (response.IsSuccessStatusCode)
+                pedido = response.Content.ReadAsAsync<Pedido>().Result;
+            else
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            return pedido;
+        }
+
+        public static Pedido[] ObtenerPedidos(Dictionary<string, string> datos)
+        {
+            Pedido[] pedidos;
+
+            string uri = "api/General/ObtenerPedidos";
+            HttpResponseMessage response = RespuestaPOST(uri, datos);
+            if (response.IsSuccessStatusCode)
+                pedidos = response.Content.ReadAsAsync<Pedido[]>().Result;
+            else
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            return pedidos;
         }
 
         #endregion

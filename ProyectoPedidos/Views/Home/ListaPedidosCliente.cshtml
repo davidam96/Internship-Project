@@ -1,0 +1,17 @@
+﻿
+<script src="~/Scripts/MisScripts/ScriptsListaPedidosCliente.js"></script>
+
+@{
+    ViewBag.Title = "Pedidos Cliente";
+
+    @* Esta línea de código refresca la vista del layout correspondiente, lo 
+        que permite que se vuelva a ejecutar su document.ready() de nuevo. *@
+    Layout = "~/Views/Shared/_LayoutPractica.cshtml";
+}
+
+<h2>Pedidos Cliente</h2>
+
+<table id="tablaPedidos" class="table mx-auto my-5"></table>
+
+<a href="/Home/HacerPedido">Nuevo pedido</a>
+

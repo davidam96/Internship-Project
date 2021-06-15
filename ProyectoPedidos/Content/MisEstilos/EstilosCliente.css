@@ -11,14 +11,21 @@
 #modalLogin form label {
     width: 110px;
 }
-#login .btn, #logout .btn {
+#login .btn,
+#logout .btn {
     width: 200px;
 }
-#tablaDetalle {
+
+/*NOTA: Un ID puede estar "duplicado", siempre y cuando sea único
+        dentro de la página del navegador (árbol DOM) abierta.
+*/
+#tablaDetalle,
+#tablaPedidos {
     border: 3px solid black;
     width: 80%;
 }
-#tablaDetalle td {
+#tablaDetalle td,
+#tablaPedidos td {
     border: 1px solid black;
 }
 

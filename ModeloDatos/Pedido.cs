@@ -10,10 +10,12 @@ namespace ModeloDatos
     {
         public int Codigo { get; set; }
         public int CodigoCliente { get; set; }
-        public DateTime FechaHoraPedido { get; set; }
-        public int CodigoEmplPrep { get; set; }
-        public DateTime FechaHoraEnvio { get; set; }
-        public int CodigoEmplRep { get; set; }
-        public DateTime FechaHoraUltMod { get; set; }
+        public float ImporteTotal { get; set; }
+        public DateTime FechaPedido { get; set; }
+        public string FechaPedidoCadena { get; set; }
+        //public int CodigoEmplPrep { get; set; }
+        //public DateTime FechaHoraEnvio { get; set; }
+        //public int CodigoEmplRep { get; set; }
+        //public DateTime FechaHoraUltMod { get; set; }
     }
 }

@@ -177,8 +177,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\MisScripts\ScriptsCliente.js" />
+    <Content Include="Scripts\MisScripts\ScriptsHacerPedido.js" />
     <Content Include="Scripts\MisScripts\ScriptsLayout.js" />
+    <Content Include="Scripts\MisScripts\ScriptsListaPedidosCliente.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
@@ -279,6 +280,8 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\LoginConLayout.cshtml" />
+    <Content Include="Views\Home\HacerPedido.cshtml" />
+    <Content Include="Views\Home\ListaPedidosCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

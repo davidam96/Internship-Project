@@ -1,4 +1,6 @@
-﻿// 1) Definicion de variables globales
+﻿'use strict';
+
+// 1) Definicion de variables globales
 var productos = [];
 var lineasDetalle = [];
 
@@ -7,29 +9,13 @@ var lineasDetalle = [];
 $(document).ready(function () {
     //YA ESTÁ TODO EL HTML CARGADO
 
-    //Gestionamos las cookies que vienen del servidor
-    gestionarCookies();
-
     //Rellenamos el combo con los productos mediante Ajax
     cargarCombo();
 });
 
-
 // 3) Resto de funciones
-function gestionarCookies() {
-    
-    var cAux = document.cookie.split("; ");
-    var cookies = {};
 
-    cAux.forEach(function (cookie) {
-        let info = cookie.split("=");
-        cookies[info[0]] = info[1];
-    });
-
-    if (cookies.CodigoUsuario != -1)
-        displayLogout(cookies.NombreUsuario);
-}
-
+/** Carga los productos desde la BBDD al combo. */
 function cargarCombo() {
 
     //Carga del combo pidiendo los productos al Servidor
@@ -43,7 +29,7 @@ function cargarCombo() {
         success: function (respuesta) {
             if (respuesta.Error === undefined) {
                 productos = respuesta.Productos;
-                cmb = $("#cmbProductos");
+                let cmb = $("#cmbProductos");
                 //$(cmb).html("");
                 var cad = "";
                 for (var i = 0; i < productos.length; i++) {
@@ -94,37 +80,90 @@ function cargarCombo() {
     */
 }
 
-function cargaCombo() {
-    //Nos inventamos una serie de productos desde el cliente (JS)
-    productos = [];
-    for (let i = 1; i <= 5; i++) {
-        var p = {};
-        p.Id = "Prod" + i;
-        p.Descripcion = "Producto " + i;
-        p.PrecioVenta = ((Math.random() * 1000) + 1).toFixed(2);
-        productos.push(p);
+/** Da de alta un producto en las lineas de detalle. */
+function NuevoProducto() {
+
+    //Recogemos la cantidad escrita en el input "txtUnidades"
+    var cantidad = $("#txtUnidades").val();
+    if (cantidad === undefined || cantidad.trim() === "") {
+        alert("Introduzca unidades");
+        return;
     }
 
-    //Metemos los productos inventados en el combo de la página HTML
-    cad = "";
-    for (let i = 0; i < productos.length; i++) {
-        cad += "<option value='" + productos[i].Id + "'>" + productos[i].Descripcion +
-            " (" + productos[i].PrecioVenta + "€)</option>";
+    //Comprobamos que la cantidad introducida sea válida
+    var unidades = parseInt(cantidad);
+    if (Number.isNaN(unidades)) {
+        alert("Unidades incorrectas");
     }
-    //document.getElementById("cmbProductos").innerHTML = cad;
-    $("#cmbProductos").html(cad);
+
+    //Creamos una línea de detalle con el
+    //producto escogido y la cantidad escrita
+    var codigoProducto = $("#cmbProductos").val();
+    productos.some((producto) => {
+        if (producto.Codigo === codigoProducto) {
+            let lineaDetalle = {};
+            lineaDetalle.CodigoProducto = producto.Codigo;
+            lineaDetalle.Descripcion = producto.Descripcion;
+            lineaDetalle.Unidades = unidades;
+            lineaDetalle.PrecioVenta = producto.PrecioVenta;
+            lineasDetalle.push(lineaDetalle);
+            return true;
+        }
+        return false;
+    });
+
+    //Actualizamos la info de todo el pedido
+    var cad = "<tr><td>Codigo</td><td>Descripcion</td><td>Unidades</td><td>Precio unidad</td><td>Precio total</td></tr>";
+    var total = 0;
+    lineasDetalle.forEach((lineaDetalle) => {
+        cad += "<tr>";
+        cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
+        cad += "<td>" + lineaDetalle.Descripcion + "</td>";
+        cad += "<td>" + lineaDetalle.Unidades + "</td>";
+        cad += "<td>" + lineaDetalle.PrecioVenta + "</td>";
+        let subtotal = (parseInt(lineaDetalle.Unidades) * parseFloat(lineaDetalle.PrecioVenta)).toFixed(2);
+        cad += "<td>" + subtotal + "</td>";
+        total += parseFloat(subtotal);
+        cad += "</tr>";
+    });
+    cad += '<tr><td colspan="5">Total... ' + total + "</td></tr>";
+    $("#tablaDetalle").html(cad);
 }
 
-function displayLogout(nombreUsuario) {
-    $("#login").css("display", "none");
-    $("#logout").css("display", "");
-    $('#nombreUsuario').html("<b>Cliente:</b> <i>" + nombreUsuario + "</i>");
+/** Da de alta el pedido en la BBDD */
+function CrearPedido() {
+
+    var destino = '/Home/CrearPedido';
+    var datos = JSON.stringify(lineasDetalle);
+
+    $.ajax({
+        url: destino,
+        method: "POST",
+        data: datos, // --> datos que enviamos al servidor
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            if (respuesta.Error === undefined) {
+                var p = respuesta.Pedido;
+                alert("Pedido " + p.Codigo + " creado correctamente");
+            }
+            else {
+                alert(respuesta.Error);
+            }
+        },
+        error: function (e) {
+            var msg = "Error no controlado en llamada a " + destino;
+            if (e !== undefined && e !== null && e !== "")
+                if (e.statusText !== "")
+                    msg += "\n" + e.statusText;
+                else
+                    msg += "\n" + e;
+            alert(msg);
+        }
+    });
 }
 
-function mensaje() {
-    //alert('Esta es la vista de los clientes');
-}
-
+/** Tutorial DOM y JQuery.  */
 function ContenidoCombo() {
 
     var cad;
@@ -171,55 +210,7 @@ function ContenidoCombo() {
     alert(cad);
 }
 
-function nuevoProducto() {
-
-    //Recogemos la cantidad escrita en el input "txtUnidades"
-    var cantidad = $("#txtUnidades").val();
-    if (cantidad === undefined || cantidad.trim() === "") {
-        alert("Introduzca unidades");
-        return;
-    }
-
-    //Comprobamos que la cantidad introducida sea válida
-    var unidades = parseInt(cantidad);
-    if (Number.isNaN(unidades)) {
-        alert("Unidades incorrectas");
-    }
-
-    //Creamos una línea de detalle con el producto escogido
-    //y la cantidad escrita
-    var codigoProducto = $("#cmbProductos").val();
-    productos.some((producto) => {
-        if (producto.Codigo === codigoProducto) {
-            let lineaDetalle = {};
-            lineaDetalle.codigoProducto = producto.Codigo;
-            lineaDetalle.descripcion = producto.Descripcion;
-            lineaDetalle.unidades = unidades;
-            lineaDetalle.precioVenta = producto.PrecioVenta;
-            lineasDetalle.push(lineaDetalle);
-            return true;
-        }
-        return false;
-    });
-
-    //Actualizamos la info de todo el pedido
-    var cad = "<tr><td>Codigo</td><td>Descripcion</td><td>Unidades</td><td>Precio unidad</td><td>Precio total</td></tr>";
-    var total = 0;
-    lineasDetalle.forEach((lineaDetalle) => {
-        cad += "<tr>";
-        cad += "<td>" + lineaDetalle.codigoProducto + "</td>";
-        cad += "<td>" + lineaDetalle.descripcion + "</td>";
-        cad += "<td>" + lineaDetalle.unidades + "</td>";
-        cad += "<td>" + lineaDetalle.precioVenta + "</td>";
-        let subtotal = Math.trunc(parseInt(lineaDetalle.unidades) * parseFloat(lineaDetalle.precioVenta), 2);
-        cad += "<td>" + subtotal + "</td>";
-        total += subtotal;
-        cad += "</tr>";
-    });
-    cad += '<tr><td colspan="5">Total... ' + total + "</td></tr>";
-    $("#tablaDetalle").html(cad);
-}
-
+/** Pruebo el funcionamiento de un array asociativo. */
 function miPrueba() {
     var array = new Array();
 

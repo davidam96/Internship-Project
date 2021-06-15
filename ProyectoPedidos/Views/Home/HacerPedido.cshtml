@@ -1,0 +1,22 @@
+﻿
+<script src="~/Scripts/MisScripts/ScriptsHacerPedido.js"></script>
+
+@{
+    ViewBag.Title = "Hacer Pedido";
+
+    @* Esta línea de código refresca la vista del layout correspondiente, lo
+        que permite que se vuelva a ejecutar su document.ready() de nuevo. *@
+    Layout = "~/Views/Shared/_LayoutPractica.cshtml";
+}
+
+<h2>Hacer Pedido</h2>
+
+<select id="cmbProductos"></select>
+
+Unidades
+<input id="txtUnidades" />
+<button id="btnAnadir" onclick="NuevoProducto()">Añadir</button>
+
+<table id="tablaDetalle" class="table mx-auto my-5"></table>
+
+<button id="btnHacerPedido" class="w-25" onclick="CrearPedido()">Hacer Pedido</button>
