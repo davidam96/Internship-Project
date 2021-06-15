@@ -146,6 +146,34 @@ namespace ProyectoPedidos.Controllers
             return View();
         }
 
+        public ActionResult ListaPedidosCliente()
+        {
+            if (Request.Cookies.AllKeys.Contains("CodigoCliente"))
+            return View();
+
+            //Aqui no escribimos 'return View("...")' porque
+            //hacemos algo ANTES de devolver la vista:
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ObtenerLineasDetalle(int codigoPedido)
+        {
+            try
+            {
+                Dictionary<string, string> datos = new Dictionary<string, string>();
+                datos.Add("CodigoPedido", codigoPedido.ToString());
+
+                LineaDetalle[] ld = ConectorAPI.ObtenerLineasDetalle(datos);
+
+                return Json(new { LineasDetalle = ld }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
     }
 }

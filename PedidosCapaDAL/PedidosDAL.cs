@@ -140,6 +140,39 @@ namespace PedidosCapaDAL
             return pedidos.ToArray();
         }
 
+        public static LineaDetalle[] ObtenerLineasDetalle(Dictionary<string, string> datos)
+        {
+            List<LineaDetalle> detalles = new List<LineaDetalle>();
+
+            using (SqlConnection cn = new SqlConnection())
+            {
+                cn.ConnectionString = Auxiliar.CadenaConexion;
+
+                var cmd = cn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT * FROM LineasDetalle WHERE CodigoPedido = @codigoPedido";
+                cmd.Parameters.AddWithValue("@codigoPedido", Convert.ToInt32(datos["CodigoPedido"]));
+
+                cn.Open();
+
+                var detallesReader = cmd.ExecuteReader();
+                while (detallesReader.Read())
+                {
+                    LineaDetalle detalle = new LineaDetalle();
+                    detalle.Codigo = Convert.ToInt32(detallesReader["Codigo"]);
+                    detalle.CodigoPedido = Convert.ToInt32(detallesReader["CodigoPedido"]);
+                    detalle.CodigoProducto = detallesReader["CodigoProducto"].ToString();
+                    detalle.Descripcion = detallesReader["Descripcion"].ToString();
+                    detalle.Unidades = Convert.ToInt32(detallesReader["Unidades"]);
+                    detalle.PrecioVenta = Convert.ToSingle(detallesReader["PrecioVenta"]);
+                    detalles.Add(detalle);
+                }
+            }
+
+            return detalles.ToArray();
+        }
+
 
     }
 }

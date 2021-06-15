@@ -92,6 +92,30 @@ namespace WebApiPedidos.Controllers
             }
         }
 
+        [Route("api/General/ObtenerLineasDetalle")]
+        [HttpPost]
+        public HttpResponseMessage ObtenerLineasDetalle(object oDatos)
+        {
+            Dictionary<string, string> datos;
+
+            try
+            {
+                datos = JsonConvert.DeserializeObject<Dictionary<string, string>>(oDatos.ToString());
+
+                LineaDetalle[] detalles = PedidosBL.ObtenerLineasDetalle(datos);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(detalles), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Conflict);
+                response.ReasonPhrase = ex.Message;
+                return response;
+            }
+        }
+
 
     }
 }

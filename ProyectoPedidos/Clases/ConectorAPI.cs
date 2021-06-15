@@ -246,6 +246,20 @@ namespace ProyectoPedidos.Clases
             return pedidos;
         }
 
+        public static LineaDetalle[] ObtenerLineasDetalle(Dictionary<string, string> datos)
+        {
+            LineaDetalle[] detalles;
+
+            string uri = "api/General/ObtenerLineasDetalle";
+            HttpResponseMessage response = RespuestaPOST(uri, datos);
+            if (response.IsSuccessStatusCode)
+                detalles = response.Content.ReadAsAsync<LineaDetalle[]>().Result;
+            else
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            return detalles;
+        }
+
         #endregion
     }
 }

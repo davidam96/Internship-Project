@@ -4,14 +4,52 @@
 @{
     ViewBag.Title = "Pedidos Cliente";
 
-    @* Esta línea de código refresca la vista del layout correspondiente, lo 
+    @* Esta línea de código refresca la vista del layout correspondiente, lo
         que permite que se vuelva a ejecutar su document.ready() de nuevo. *@
     Layout = "~/Views/Shared/_LayoutPractica.cshtml";
 }
 
 <h2>Pedidos Cliente</h2>
 
-<table id="tablaPedidos" class="table mx-auto my-5"></table>
+@* FILTRAR PEDIDOS POR FECHA *@
+<form class="mt-4">
+    Desde
+    <input id="fechaDesde" type="date" />
+    Hasta
+    <input id="fechaDesde" type="date" />
+    <input type="button" value="Filtrar" onclick="FiltrarFechaPedidos()" />
+</form>
 
-<a href="/Home/HacerPedido">Nuevo pedido</a>
+
+@* TABLA PEDIDOS DEL CLIENTE *@
+<table id="tablaPedidos" class="table mx-auto mt-3 mb-5"></table>
+
+
+@* TABLA DETALLE DE UN PEDIDO *@
+<div id="divDetalle" class="justify-content-start d-none">
+
+    <div class="text-justify offset-md-1 pl-2 pl-md-4">
+        <h2 class="mt-5 mb-3">Detalle del Pedido</h2>
+
+
+        <label><b>Código pedido: &nbsp;</b></label>
+        <label id="lblCodigoPedido"></label>
+        <br />
+
+        <label><b>Fecha pedido: &nbsp;</b></label>
+        <label id="lblFechaPedido"></label>
+        <br />
+
+        <label><b>Importe pedido: &nbsp;</b></label>
+        <label id="lblImportePedido"></label>
+        <br />
+    </div>
+
+    <table id="tablaDetalle" class="table mx-auto mt-4"></table>
+
+</div>
+
+@* BOTON HACER NUEVO PEDIDO *@
+<a href="/Home/HacerPedido"
+   class="btn btn-warning border-dark rounded my-4 px-5">Nuevo pedido</a>
 

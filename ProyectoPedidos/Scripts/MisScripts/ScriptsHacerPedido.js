@@ -113,20 +113,20 @@ function NuevoProducto() {
     });
 
     //Actualizamos la info de todo el pedido
-    var cad = "<tr><td>Codigo</td><td>Descripcion</td><td>Unidades</td><td>Precio unidad</td><td>Precio total</td></tr>";
+    var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr>";
     var total = 0;
     lineasDetalle.forEach((lineaDetalle) => {
         cad += "<tr>";
         cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
         cad += "<td>" + lineaDetalle.Descripcion + "</td>";
         cad += "<td>" + lineaDetalle.Unidades + "</td>";
-        cad += "<td>" + lineaDetalle.PrecioVenta + "</td>";
+        cad += "<td>" + lineaDetalle.PrecioVenta + "€ </td>";
         let subtotal = (parseInt(lineaDetalle.Unidades) * parseFloat(lineaDetalle.PrecioVenta)).toFixed(2);
-        cad += "<td>" + subtotal + "</td>";
+        cad += "<td>" + subtotal + "€ </td>";
         total += parseFloat(subtotal);
         cad += "</tr>";
     });
-    cad += '<tr><td colspan="5">Total... ' + total + "</td></tr>";
+    cad += '<tr><td colspan="5">Total... ' + total + "€ </td></tr>";
     $("#tablaDetalle").html(cad);
 }
 
@@ -161,6 +161,10 @@ function CrearPedido() {
             alert(msg);
         }
     });
+}
+
+function VolverAListaPedidos() {
+    window.location = '/Home/ListaPedidosCliente';
 }
 
 /** Tutorial DOM y JQuery.  */

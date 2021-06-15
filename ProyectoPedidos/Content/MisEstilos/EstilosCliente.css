@@ -24,7 +24,9 @@
     border: 3px solid black;
     width: 80%;
 }
+#tablaDetalle th,
 #tablaDetalle td,
+#tablaPedidos th,
 #tablaPedidos td {
     border: 1px solid black;
 }

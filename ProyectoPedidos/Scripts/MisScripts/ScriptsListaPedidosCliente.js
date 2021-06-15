@@ -41,14 +41,81 @@ function CargarPedidos() {
 }
 
 function CargarTablaPedidos(pedidos) {
-
-    var cad = "<tr><td>Código</td><td>Fecha</td><td>Importe</td></tr>";
+    var cad = "<tr><th>Acciones</th><th>Código</th><th>Fecha</th><th>Importe</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
+        cad += "<td><button onclick='VerDetalle(" + pedido.Codigo + ")'>Ver</button></td>"
         cad += "<td>" + pedido.Codigo + "</td>";
         cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
         cad += "<td>" + pedido.ImporteTotal.toFixed(2) + "€ </td>";
         cad += "</tr>";
     });
     $("#tablaPedidos").html(cad);
+}
+
+function VerDetalle(codigoPedido) {
+
+    var destino = '/Home/ObtenerLineasDetalle';
+
+    var datos = {};
+    datos.codigoPedido = codigoPedido;
+
+    $.ajax({
+        url: destino,
+        method: "POST",
+        data: JSON.stringify(datos), // --> datos que enviamos al servidor
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            if (respuesta.Error === undefined) {
+                let fila;
+                $("#tablaPedidos").children().each((index, row) => {
+                    var filaAux = $(row).children().eq(1).text();
+                    if (filaAux === codigoPedido.toString())
+                        fila = $(row);
+                });
+
+                if (fila !== undefined) {
+                    $("#lblCodigoPedido").html(codigoPedido);
+                    $("#lblFechaPedido").text(fila.children().eq(2).text());
+                    $("#lblImportePedido").text(fila.children().eq(3).text());
+
+                    CargarTablaLineasDetalle(respuesta.LineasDetalle);
+
+                    //$("#divDetalle").css("display", "");
+                    $("#divDetalle").removeClass("d-none");
+                }
+            }
+            else {
+                alert(respuesta.Error);
+            }
+        },
+        error: function (e) {
+            var msg = "Error no controlado en llamada a " + destino;
+            if (e !== undefined && e !== null && e !== "")
+                if (e.statusText !== "")
+                    msg += "\n" + e.statusText;
+                else
+                    msg += "\n" + e;
+            alert(msg);
+        }
+    });
+}
+
+function CargarTablaLineasDetalle(lineasDetalle) {
+    var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr>";
+    var total = 0;
+    lineasDetalle.forEach((lineaDetalle) => {
+        cad += "<tr>";
+        cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
+        cad += "<td>" + lineaDetalle.Descripcion + "</td>";
+        cad += "<td>" + lineaDetalle.Unidades + "</td>";
+        cad += "<td>" + lineaDetalle.PrecioVenta + "€ </td>";
+        let subtotal = (parseInt(lineaDetalle.Unidades) * parseFloat(lineaDetalle.PrecioVenta)).toFixed(2);
+        cad += "<td>" + subtotal + "€ </td>";
+        total += parseFloat(subtotal);
+        cad += "</tr>";
+    });
+    cad += '<tr><td colspan="5">Total... ' + total + "€ </td></tr>";
+    $("#tablaDetalle").html(cad);
 }
