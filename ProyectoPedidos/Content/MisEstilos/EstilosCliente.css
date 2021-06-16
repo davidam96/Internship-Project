@@ -22,7 +22,6 @@
 #tablaDetalle,
 #tablaPedidos {
     border: 3px solid black;
-    width: 80%;
 }
 #tablaDetalle th,
 #tablaDetalle td,
@@ -30,4 +29,3 @@
 #tablaPedidos td {
     border: 1px solid black;
 }
-

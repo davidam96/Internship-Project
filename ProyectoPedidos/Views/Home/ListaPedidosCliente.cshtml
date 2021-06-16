@@ -13,22 +13,20 @@
 
 @* FILTRAR PEDIDOS POR FECHA *@
 <form class="mt-4">
-    Desde
-    <input id="fechaDesde" type="date" />
-    Hasta
-    <input id="fechaHasta" type="date" />
+    Desde <input id="fechaDesde" type="date" />
+    Hasta <input id="fechaHasta" type="date" />
     <input type="button" value="Filtrar" onclick="FiltrarFechaPedidos()" />
 </form>
 
 
 @* TABLA PEDIDOS DEL CLIENTE *@
-<table id="tablaPedidos" class="table mx-auto mt-3 mb-5"></table>
+<table id="tablaPedidos" class="table mx-auto mt-3"></table>
 
 
 @* TABLA DETALLE DE UN PEDIDO *@
 <div id="divDetalle" class="justify-content-start d-none">
 
-    <div class="text-justify offset-md-1 pl-2 pl-md-4">
+    <div class="text-justify pl-md-3">
         <h2 class="mt-5 mb-3">Detalle del Pedido</h2>
 
 
@@ -50,6 +48,6 @@
 </div>
 
 @* BOTON HACER NUEVO PEDIDO *@
-<a href="/Home/HacerPedido"
+<a href="/Home/HacerPedido" style="font-size: 24px;"
    class="btn btn-warning border-dark rounded my-4 px-5">Nuevo pedido</a>
 

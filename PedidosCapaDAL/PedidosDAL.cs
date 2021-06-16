@@ -116,7 +116,7 @@ namespace PedidosCapaDAL
                     if (filtro == "")
                         filtro += " WHERE ";
 
-                    filtro += " CodigoCliente = @codigoCliente";
+                    filtro += "CodigoCliente = @codigoCliente";
                     cmd.Parameters.AddWithValue("@codigoCliente", Convert.ToInt32(datos["CodigoCliente"]));
 
                 }
@@ -128,8 +128,9 @@ namespace PedidosCapaDAL
                     else
                         filtro += " AND ";
 
-                    filtro += " CodigoCliente = @codigoCliente";
-                    cmd.Parameters.AddWithValue("@codigoCliente", Convert.ToDateTime(datos["FechaDesde"]));
+                    filtro += "FechaPedido >= @fechaDesde";
+                    string fechaDesdeTxt = Convert.ToDateTime(datos["FechaDesde"]).ToString("yyyy-MM-dd 23:59:59");
+                    cmd.Parameters.AddWithValue("@fechaDesde", Convert.ToDateTime(fechaDesdeTxt));
 
                 }
 
@@ -140,8 +141,9 @@ namespace PedidosCapaDAL
                     else
                         filtro += " AND ";
 
-                    filtro += " FechaPedido <= @fechaHasta";
-                    cmd.Parameters.AddWithValue("@fechaHasta", Convert.ToDateTime(datos["FechaHasta"]));
+                    filtro += "FechaPedido <= @fechaHasta";
+                    string fechaHastaTxt = Convert.ToDateTime(datos["FechaHasta"]).ToString("yyyy-MM-dd 23:59:59");
+                    cmd.Parameters.AddWithValue("@fechaHasta", Convert.ToDateTime(fechaHastaTxt));
 
                 }
 
