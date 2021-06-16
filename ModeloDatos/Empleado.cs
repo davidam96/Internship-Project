@@ -9,15 +9,11 @@ namespace ModeloDatos
     public class Empleado
     {
         public int Codigo { get; set; }
-        public string UsuarioApp { get; set; }
-        public string PasswordUsuario { get; set; }
-        public string NombreUsuario { get; set; }
-        public string ApellidosUsuario { get; set; }
-        public string TelefonoUsuario { get; set; }
-        public string MailUsuario { get; set; }
-        public int TipoEmpleado { get; set; }
-        public DateTime FechaAlta { get; set; }
-        public DateTime FechaBaja { get; set; }
-        public DateTime FechaHoraUltMod { get; set; }
+        public string NombreEmpleado { get; set; }
+        public string Password { get; set; }
+        public string Nombre { get; set; }
+        public string Apellidos { get; set; }
+        public bool PuedePrepararPedidos { get; set; }
+        public bool PuedeEnviarPedidos { get; set; }
     }
 }

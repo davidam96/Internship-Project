@@ -51,6 +51,15 @@
                         Login Empleado
                     </button>
                 </div>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div id="txtLoginIncorrecto" class="col-12 mt-1 d-flex justify-content-md-end">
+                        <label class="text-danger"><b>@ViewBag.Error</b></label>
+                        <script>desaparece();</script>
+                    </div>
+                    ViewBag.Error = null;
+                }
             </div>
 
             @* Boton Logout *@
@@ -83,16 +92,18 @@
                     </button>
                 </div>
 
-                <form action="/Home/ValidarCliente" method="POST">
+                <form id="formLogin" action="" method="POST">
                     <div class="modal-body row">
                         <div class="form-group col-12 d-flex justify-content-around">
                             <label for="recipient-name" class="col-form-label mr-2">Mail:</label>
-                            <input type="text" class="form-control" name="txtMail" />
+                            <input type="text" class="form-control" id="username" name="" required="required"/>
                         </div>
                         <div class="form-group col-12 d-flex justify-content-center">
                             <label for="message-text" class="col-form-label mr-2">Contraseña:</label>
-                            <input type="text" class="form-control" name="txtPassword" />
+                            <input type="text" class="form-control" name="txtPassword" required="required"/>
                         </div>
+
+                        @* SI EL USUARIO NO ESCRIBE LOS CAMPOS, PONER EL VIEWBAG.TEXTOERROR AQUI... *@
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" id="esCliente" name="esCliente" value="" />

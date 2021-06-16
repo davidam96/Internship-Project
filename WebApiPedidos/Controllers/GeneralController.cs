@@ -116,6 +116,33 @@ namespace WebApiPedidos.Controllers
             }
         }
 
+        [Route("api/General/ValidarEmpleado")]
+        [HttpPost]
+        public HttpResponseMessage ValidarEmpleado(object oDatos)
+        {
+            Dictionary<string, string> datos;
+
+            try
+            {
+                //Deserializamos el parametro 'oDatos'
+                datos = JsonConvert.DeserializeObject<Dictionary<string, string>>(oDatos.ToString());
+
+                //Implementamos la logica de negocio sobre 'datos'
+                Empleado empleado = EmpleadosBL.ValidarEmpleado(datos);
+
+                //HttpResponseMessage response = new HttpResponseMessage();
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(empleado), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Conflict);
+                response.ReasonPhrase = ex.Message;
+                return response;
+            }
+        }
+
 
     }
 }

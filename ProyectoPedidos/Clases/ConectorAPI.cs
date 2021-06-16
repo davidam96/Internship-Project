@@ -260,6 +260,24 @@ namespace ProyectoPedidos.Clases
             return detalles;
         }
 
+        public static Empleado ValidarEmpleado(string txtNombreEmpleado, string txtPassword)
+        {
+            Dictionary<string, string> infoConexion = new Dictionary<string, string>();
+            infoConexion.Add("txtNombreEmpleado", txtNombreEmpleado);
+            infoConexion.Add("txtPassword", txtPassword);
+
+            Empleado empleado = null;
+
+            string uri = "api/General/ValidarEmpleado";
+            HttpResponseMessage response = RespuestaPOST(uri, infoConexion);
+            if (response.IsSuccessStatusCode)
+                empleado = response.Content.ReadAsAsync<Empleado>().Result;
+            else
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            return empleado;
+        }
+
         #endregion
     }
 }

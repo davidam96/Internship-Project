@@ -7,7 +7,8 @@ $(document).ready(function () {
 
 });
 
-function FiltrarFechaPedidos() {
+function FiltrarPedidos() {
+    let codigoCliente = $("#codigoCliente").val();
     let fDesde = $("#fechaDesde").val();
     let fHasta = $("#fechaHasta").val();
 
@@ -16,7 +17,9 @@ function FiltrarFechaPedidos() {
     //EXACTAMENTE IGUAL que los parámetros de entrada de dicho método,
     //exceptuando la 1ª letra que puede estar en mayúsculas o minúsculas.
     let datos = {};
-  
+
+    if (codigoCliente !== undefined && codigoCliente !== "")
+        datos.CodigoCliente = codigoCliente;
     if (fDesde !== undefined && fDesde !== "")
         datos.FechaDesde = fDesde;
     if (fHasta !== undefined && fHasta !== "")
@@ -26,6 +29,7 @@ function FiltrarFechaPedidos() {
 }
 
 function QuitarFiltros() {
+    $("#codigoCliente").val("");
     $("#fechaDesde").val("");
     $("#fechaHasta").val("");
 }
@@ -37,7 +41,7 @@ function CargarPedidos(datos) {
     if (datos === undefined)
         var datos = {};
 
-    datos.CodigoCliente = cookies.CodigoCliente;
+    //datos.codigoCliente = cookies.CodigoCliente;
 
     $.ajax({
         url: destino,
@@ -66,12 +70,13 @@ function CargarPedidos(datos) {
 }
 
 function CargarTablaPedidos(pedidos) {
-    var cad = "<tr><th>Acciones</th><th>Código</th><th>Fecha</th><th>Importe</th></tr>";
+    var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
             'onclick="VerDetalle(' + pedido.Codigo + ')">Ver</button></td>';
         cad += "<td>" + pedido.Codigo + "</td>";
+        cad += "<td>" + pedido.CodigoCliente + "</td>";
         cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
         cad += "<td>" + pedido.ImporteTotal.toFixed(2) + "€ </td>";
         cad += "</tr>";
@@ -103,8 +108,8 @@ function VerDetalle(codigoPedido) {
 
                 if (fila !== undefined) {
                     $("#lblCodigoPedido").html(codigoPedido);
-                    $("#lblFechaPedido").text(fila.children().eq(2).text());
-                    $("#lblImportePedido").text(fila.children().eq(3).text());
+                    $("#lblFechaPedido").text(fila.children().eq(3).text());
+                    $("#lblImportePedido").text(fila.children().eq(4).text());
 
                     CargarTablaLineasDetalle(respuesta.LineasDetalle);
 

@@ -1,5 +1,5 @@
 ﻿
-<script src="~/Scripts/MisScripts/ScriptsListaPedidosCliente.js"></script>
+<script src="~/Scripts/MisScripts/ScriptsListaPedidosEmpleado.js"></script>
 
 @{
     ViewBag.Title = "Pedidos Cliente";
@@ -9,18 +9,19 @@
     Layout = "~/Views/Shared/_LayoutPractica.cshtml";
 }
 
-<h2>Pedidos Cliente</h2>
+<h2>Lista de Pedidos</h2>
 
-@* FILTRAR PEDIDOS POR FECHA *@
+@* FILTRAR PEDIDOS POR CLIENTE Y FECHA *@
 <form class="mt-4">
+    Cliente <input id="codigoCliente" type="number" />
     Desde <input id="fechaDesde" type="date" />
     Hasta <input id="fechaHasta" type="date" />
-    <input type="button" value="Filtrar" onclick="FiltrarFechaPedidos()" />
+    <input type="button" value="Filtrar" onclick="FiltrarPedidos()" />
     <input type="button" value="Limpiar filtros" onclick="QuitarFiltros()" />
 </form>
 
 
-@* TABLA PEDIDOS DEL CLIENTE *@
+@* TABLA PEDIDOS  *@
 <table id="tablaPedidos" class="table mx-auto mt-3"></table>
 
 
@@ -48,7 +49,10 @@
 
 </div>
 
+<!--
+
 @* BOTON HACER NUEVO PEDIDO *@
 <a href="/Home/HacerPedido" style="font-size: 24px;"
    class="btn btn-warning border-dark rounded my-4 px-5">Nuevo pedido</a>
 
+-->

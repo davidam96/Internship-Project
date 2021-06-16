@@ -33,11 +33,10 @@ function GestionarCookies() {
         cookies[info[0]] = info[1];
     });
 
-    if (cookies.CodigoCliente === undefined)
-        displayLogin();
-    else {
+    if (cookies.CodigoCliente || cookies.CodigoEmpleado)
         displayLogout();
-    } 
+    else 
+        displayLogin();
 }
 
 function OnShowModalLogin() {
@@ -48,14 +47,22 @@ function OnShowModalLogin() {
             $('#modalLogin .modal-title').text("Login Cliente");
             $('#modalLogin .modal-header').removeClass("bg-success");
             $('#modalLogin .modal-header').addClass("bg-primary");
-            $('#esCliente').attr("value", "1");
+            $('#formLogin').attr("action", "/Home/ValidarCliente");
+            $('#username').attr("name", "txtMail");
         } else {
             $('#modalLogin .modal-title').text("Login Empleado");
             $('#modalLogin .modal-header').removeClass("bg-primary");
             $('#modalLogin .modal-header').addClass("bg-success");
-            $('#esCliente').attr("value", "0");
+            $('#formLogin').attr("action", "/Home/ValidarEmpleado");
+            $('#username').attr("name", "txtNombreEmpleado");
         }
     });
+}
+
+function desaparece() {
+    setTimeout(() => {
+        $('#txtLoginIncorrecto').html("");
+    }, 2000);
 }
 
 function displayLogin() {
@@ -67,5 +74,9 @@ function displayLogin() {
 function displayLogout() {
     $("#login").css("display", "none");
     $("#logout").css("display", "");
-    $('#nombreUsuario').html("<b>Cliente:</b> <i>" + cookies.NombreCliente + "</i>");
+
+    if(cookies.CodigoCliente)
+        $('#nombreUsuario').html("<b>Cliente:</b> <i>" + cookies.NombreCliente + "</i>");
+    else if (cookies.CodigoEmpleado)
+        $('#nombreUsuario').html("<b>Empleado:</b> <i>" + cookies.NombreEmpleado + "</i>");
 }

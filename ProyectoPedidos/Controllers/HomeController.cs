@@ -43,7 +43,7 @@ namespace ProyectoPedidos.Controllers
             //pues de lo contrario el loguin no es válido.
             if (cliente == null)
             {
-                ViewBag.TextoError = "Usuario o contraseña incorrectos.";
+                ViewBag.Error = "Usuario o contraseña incorrectos.";
                 return View("LoginConLayout");
             }
 
@@ -51,7 +51,6 @@ namespace ProyectoPedidos.Controllers
             Response.Cookies.Add(new HttpCookie("CodigoCliente", cliente.Codigo.ToString()));
             Response.Cookies.Add(new HttpCookie("NombreCliente", cliente.NombreCliente + " " + cliente.ApellidosCliente));
 
-            //return View("HacerPedido");
             return View("ListaPedidosCliente");
         }
 
@@ -123,14 +122,14 @@ namespace ProyectoPedidos.Controllers
             }
         }
 
-        public ActionResult ObtenerPedidos(int codigoCliente, DateTime? fechaDesde, DateTime? fechaHasta)
+        public ActionResult ObtenerPedidos(int? codigoCliente, DateTime? fechaDesde, DateTime? fechaHasta)
         {
             try
             {
                 Dictionary<string, string> datos = new Dictionary<string, string>();
 
-                datos.Add("CodigoCliente", codigoCliente.ToString());
-
+                if (codigoCliente.HasValue)
+                    datos.Add("CodigoCliente", codigoCliente.ToString());
                 if (fechaDesde.HasValue)
                     datos.Add("FechaDesde", fechaDesde.ToString());
                 if (fechaDesde.HasValue)
@@ -178,6 +177,26 @@ namespace ProyectoPedidos.Controllers
             {
                 return Json(new { Error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult ValidarEmpleado(string txtNombreEmpleado, string txtPassword)
+        {
+            var empleado = ConectorAPI.ValidarEmpleado(txtNombreEmpleado, txtPassword);
+
+            //Comprobamos que el empleado no sea nulo,
+            //pues de lo contrario el loguin no es válido.
+            if (empleado == null)
+            {
+                ViewBag.Error = "Usuario o contraseña incorrectos.";
+                return View("LoginConLayout");
+            }
+
+            //Creamos varias cookies en el servidor que enviaremos al cliente
+            Response.Cookies.Add(new HttpCookie("CodigoEmpleado", empleado.Codigo.ToString()));
+            Response.Cookies.Add(new HttpCookie("NombreEmpleado", empleado.Nombre + " " + empleado.Apellidos));
+
+            return View("ListaPedidosEmpleado");
+
         }
 
 
