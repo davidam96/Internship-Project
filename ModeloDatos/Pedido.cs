@@ -17,5 +17,6 @@ namespace ModeloDatos
         public int? CodigoEmpleadoPrep { get; set; } = null;
         public string FechaEnvioCadena { get; set; } = null;
         public int? CodigoEmpleadoEnv { get; set; } = null;
+        public string FechaCancelacionCadena { get; set; } = null;
     }
 }

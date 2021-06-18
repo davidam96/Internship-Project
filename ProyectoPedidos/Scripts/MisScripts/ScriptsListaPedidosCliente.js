@@ -66,7 +66,7 @@ function CargarPedidos(datos) {
 }
 
 function CargarTablaPedidos(pedidos) {
-    var cad = "<tr><th>Acciones</th><th>Código</th><th>Fecha</th><th>Importe</th></tr>";
+    var cad = "<tr><th>Acciones</th><th>Código</th><th>Fecha</th><th>Importe</th><th>Envío</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
@@ -74,6 +74,20 @@ function CargarTablaPedidos(pedidos) {
         cad += "<td>" + pedido.Codigo + "</td>";
         cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
         cad += "<td>" + pedido.ImporteTotal.toFixed(2) + "€ </td>";
+
+        //Fecha Envio
+        cad += "<td>";
+        if (pedido.FechaEnvioCadena != null)
+            cad += pedido.FechaEnvioCadena;
+        else if (pedido.FechaCancelacionCadena != null) {
+            cad += '<b class="text-danger">Cancelado</b>';
+        } else {
+            cad += '<button class="btn btn-danger border-dark rounded"' +
+                'onclick="CancelarPedido(' + pedido.Codigo + ')" ';
+            cad += '>Cancelar</button>';
+        }
+        cad += "</td>";
+
         cad += "</tr>";
     });
     $("#tablaPedidos").html(cad);
@@ -144,4 +158,63 @@ function CargarTablaLineasDetalle(lineasDetalle) {
     });
     cad += '<tr><td colspan="5">Total... ' + total + "€ </td></tr>";
     $("#tablaDetalle").html(cad);
+}
+
+function CancelarPedido(codigoPedido) {
+
+    let ok = confirm("¿Está seguro de que desea cancelar este pedido?");
+    if (!ok)
+        return; 
+
+    //Han aceptado la cancelación y seguimos con el proceso.
+    //Bloqueamos el botón para evitar que lo vuelvan a pulsar.
+
+    let tabla = $("#tablaPedidos")
+
+    let btnCancelar;
+    tabla.children().each((index, row) => {
+        let fila = $(row);
+        if (fila.children().eq(1).text() === codigoPedido.toString()) {
+            btnCancelar = fila.children().eq(4).children().eq(0);
+            btnCancelar.attr("disabled", "disabled");
+            return;
+        }    
+    });
+
+
+    var destino = '/Home/CancelarPedido';
+
+    var datos = {};
+    datos.CodigoPedido = codigoPedido;
+
+    $.ajax({
+        url: destino,
+        method: "POST",
+        data: JSON.stringify(datos), // --> datos que enviamos al servidor
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            if (respuesta.Error === undefined) {
+                //Todo ok.
+                tabla.children().each((index, row) => {
+                    let fila = $(row);
+                    if (fila.children().eq(1).text() === codigoPedido.toString())
+                        fila.children().eq(4).html('<b class="text-danger">Cancelado</b>');
+                });
+
+            }
+            else {
+                alert(respuesta.Error);
+            }
+        },
+        error: function (e) {
+            var msg = "Error no controlado en llamada a " + destino;
+            if (e !== undefined && e !== null && e !== "")
+                if (e.statusText !== "")
+                    msg += "\n" + e.statusText;
+                else
+                    msg += "\n" + e;
+            alert(msg);
+        }
+    });
 }

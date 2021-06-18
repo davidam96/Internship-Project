@@ -3,6 +3,7 @@ using ProyectoPedidos.Clases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -285,6 +286,47 @@ namespace ProyectoPedidos.Controllers
                 Pedido pedido = ConectorAPI.ModificarPedido(datos);
 
                 return Json(new { Fecha = pedido.FechaPreparacionCadena }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult EnviarPedido(int codigoPedido, int codigoEmpleado)
+        {
+            try
+            {
+                Dictionary<string, string> datos = new Dictionary<string, string>();
+                datos.Add("CodigoPedido", codigoPedido.ToString());
+                datos.Add("CodigoEmpleado", codigoEmpleado.ToString());
+                datos.Add("accion", "Enviar");
+
+                Pedido pedido = ConectorAPI.ModificarPedido(datos);
+
+                return Json(new { Fecha = pedido.FechaEnvioCadena }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult CancelarPedido(int codigoPedido)
+        {
+            try
+            {
+                Dictionary<string, string> datos = new Dictionary<string, string>();
+                datos.Add("CodigoPedido", codigoPedido.ToString());
+                datos.Add("accion", "Cancelar");
+
+                Thread.Sleep(2000); //BORRA ESTA LINEA
+
+                Pedido pedido = ConectorAPI.ModificarPedido(datos);
+
+                return Json(new { Fecha = pedido.FechaCancelacionCadena }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)

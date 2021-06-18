@@ -68,7 +68,7 @@ function CargarPedidos(datos) {
 }
 
 function CargarTablaPedidos(pedidos) {
-    var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th><th>Preparación</th></tr>";
+    var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th><th>Preparación</th><th>Envío</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
@@ -85,6 +85,18 @@ function CargarTablaPedidos(pedidos) {
         else if (cookies.EMP_PuedePrepararPedidos) {
             cad += '<button class="btn btn-success border-dark rounded"' +
                 'onclick="PrepararPedido(' + pedido.Codigo + ')">Preparar</button>';
+        }
+        cad += "</td>";
+
+        //Fecha Envio
+        cad += "<td>";
+        if (pedido.FechaEnvioCadena != null)
+            cad += pedido.FechaEnvioCadena;
+        else if (cookies.EMP_PuedeEnviarPedidos) {
+            cad += '<button class="btn btn-warning border-dark rounded"' +
+                'onclick="EnviarPedido(' + pedido.Codigo + ')" ';
+            cad += (pedido.FechaPreparacionCadena === null ? 'disabled="disabled "' : "");
+            cad +=  '>Enviar</button>';
         }
         cad += "</td>";
 
@@ -177,7 +189,59 @@ function PrepararPedido(codigoPedido) {
         success: function (respuesta) {
             if (respuesta.Error === undefined) {
                 //Todo ok.
-                alert("Fecha preparacion: " + respuesta.Fecha);
+                let tabla = $("#tablaPedidos")
+                tabla.children().each((index, row) => {
+                    let fila = $(row);
+                    if (fila.children().eq(1).text() === codigoPedido.toString()) {
+
+                        fila.children().eq(5).html("<i>" + respuesta.Fecha + "</i>");
+
+                        //Caso de que el boton "Enviar" este deshabilitado
+                        let btnEnviar = fila.children().eq(6).children().eq(0);
+                        btnEnviar.removeAttr("disabled");
+                    }
+                });
+            }
+            else {
+                alert(respuesta.Error);
+            }
+        },
+        error: function (e) {
+            var msg = "Error no controlado en llamada a " + destino;
+            if (e !== undefined && e !== null && e !== "")
+                if (e.statusText !== "")
+                    msg += "\n" + e.statusText;
+                else
+                    msg += "\n" + e;
+            alert(msg);
+        }
+    });
+}
+
+function EnviarPedido(codigoPedido) {
+
+    var destino = '/Home/EnviarPedido';
+
+    var datos = {};
+    datos.CodigoPedido = codigoPedido;
+    datos.CodigoEmpleado = cookies.EMP_CodigoEmpleado;
+
+    $.ajax({
+        url: destino,
+        method: "POST",
+        data: JSON.stringify(datos), // --> datos que enviamos al servidor
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            if (respuesta.Error === undefined) {
+                //Todo ok.
+                let tabla = $("#tablaPedidos")
+                tabla.children().each((index, row) => {
+                    let fila = $(row);
+                    if (fila.children().eq(1).text() === codigoPedido.toString())
+                        fila.children().eq(6).html("<i>" + respuesta.Fecha + "</i>");
+                });
+
             }
             else {
                 alert(respuesta.Error);

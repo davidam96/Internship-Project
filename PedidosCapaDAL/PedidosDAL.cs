@@ -117,6 +117,15 @@ namespace PedidosCapaDAL
                         cmd.CommandText += " WHERE Codigo = @codigoPedido";
                         cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
                         break;
+                    case "Enviar":
+                        cmd.CommandText += "FechaEnvio = GETDATE(), CodEmpleadoEnv = @codigoEmpleado";
+                        cmd.CommandText += " WHERE Codigo = @codigoPedido";
+                        cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
+                        break;
+                    case "Cancelar":
+                        cmd.CommandText += "FechaCancelacion = GETDATE()";
+                        cmd.CommandText += " WHERE Codigo = @codigoPedido";
+                        break;
                 }
 
                 cmd.Parameters.AddWithValue("codigoPedido", datos["CodigoPedido"]);
@@ -221,6 +230,8 @@ namespace PedidosCapaDAL
                         pedido.FechaEnvioCadena = Convert.ToDateTime(pedidosReader["FechaEnvio"]).ToString();
                     if (pedidosReader["CodEmpleadoEnv"] != DBNull.Value)
                         pedido.CodigoEmpleadoEnv = Convert.ToInt32(pedidosReader["CodEmpleadoEnv"]);
+                    if (pedidosReader["FechaCancelacion"] != DBNull.Value)
+                        pedido.FechaCancelacionCadena = Convert.ToDateTime(pedidosReader["FechaCancelacion"]).ToString();
 
                     pedidos.Add(pedido);
                 }
