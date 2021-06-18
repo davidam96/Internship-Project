@@ -33,8 +33,19 @@ function GestionarCookies() {
         cookies[info[0]] = info[1];
     });
 
-    if (cookies.CodigoCliente || cookies.CodigoEmpleado)
-        displayLogout();
+    //Gestionamos las cookies de permisos del empleado
+    if (cookies.EMP_PuedePrepararPedidos)
+        cookies.EMP_PuedePrepararPedidos = (cookies.EMP_PuedePrepararPedidos === "True" ? true : false);
+    if (cookies.EMP_PuedeEnviarPedidos)
+        cookies.EMP_PuedeEnviarPedidos = (cookies.EMP_PuedeEnviarPedidos === "False" ? false : true);
+
+    let tipo = cookies.Tipo;
+
+    //Con esta línea conseguimos caducar una cookie en el lado del cliente
+    document.cookie = "Tipo=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+
+    if ((cookies.CLI_CodigoCliente || cookies.EMP_CodigoEmpleado) && tipo !== "Logout")
+        displayLogout(tipo);
     else 
         displayLogin();
 }
@@ -71,12 +82,12 @@ function displayLogin() {
     $('#nombreUsuario').html("");
 }
 
-function displayLogout() {
+function displayLogout(tipo) {
     $("#login").css("display", "none");
     $("#logout").css("display", "");
 
-    if(cookies.CodigoCliente)
-        $('#nombreUsuario').html("<b>Cliente:</b> <i>" + cookies.NombreCliente + "</i>");
-    else if (cookies.CodigoEmpleado)
-        $('#nombreUsuario').html("<b>Empleado:</b> <i>" + cookies.NombreEmpleado + "</i>");
+    if(cookies.CLI_CodigoCliente && tipo === "Cliente")
+        $('#nombreUsuario').html("<b>Cliente:</b> <i>" + cookies.CLI_NombreCliente + "</i>");
+    else if (cookies.EMP_CodigoEmpleado && tipo === "Empleado")
+        $('#nombreUsuario').html("<b>Empleado:</b> <i>" + cookies.EMP_NombreEmpleado + "</i>");
 }

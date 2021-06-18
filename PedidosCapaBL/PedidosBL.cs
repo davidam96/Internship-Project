@@ -37,5 +37,10 @@ namespace PedidosCapaBL
             return PedidosDAL.ObtenerLineasDetalle(datos);
         }
 
+        public static Pedido ModificarPedido(Dictionary<string, string> datos)
+        {
+            return PedidosDAL.ModificarPedido(datos);
+        }
+
     }
 }

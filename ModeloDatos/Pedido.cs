@@ -13,9 +13,9 @@ namespace ModeloDatos
         public float ImporteTotal { get; set; }
         public DateTime FechaPedido { get; set; }
         public string FechaPedidoCadena { get; set; }
-        //public int CodigoEmplPrep { get; set; }
-        //public DateTime FechaHoraEnvio { get; set; }
-        //public int CodigoEmplRep { get; set; }
-        //public DateTime FechaHoraUltMod { get; set; }
+        public string FechaPreparacionCadena { get; set; } = null;
+        public int? CodigoEmpleadoPrep { get; set; } = null;
+        public string FechaEnvioCadena { get; set; } = null;
+        public int? CodigoEmpleadoEnv { get; set; } = null;
     }
 }

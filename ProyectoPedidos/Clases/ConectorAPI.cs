@@ -278,6 +278,20 @@ namespace ProyectoPedidos.Clases
             return empleado;
         }
 
+        public static Pedido ModificarPedido(Dictionary<string, string> datos)
+        {
+            Pedido pedido;
+
+            string uri = "api/General/ModificarPedido";
+            HttpResponseMessage response = RespuestaPOST(uri, datos);
+            if (response.IsSuccessStatusCode)
+                pedido = response.Content.ReadAsAsync<Pedido>().Result;
+            else
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            return pedido;
+        }
+
         #endregion
     }
 }

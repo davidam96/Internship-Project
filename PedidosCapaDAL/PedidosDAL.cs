@@ -97,6 +97,50 @@ namespace PedidosCapaDAL
             }
         }
 
+        public static Pedido ModificarPedido(Dictionary<string, string> datos)
+        {
+            Pedido pedido = null;
+
+            using (SqlConnection cn = new SqlConnection())
+            {
+                cn.ConnectionString = Auxiliar.CadenaConexion;
+
+                var cmd = cn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE Pedidos SET ";
+
+                string accion = datos["accion"];
+                switch (accion)
+                {
+                    case "Preparar":
+                        cmd.CommandText += "FechaPreparacion = GETDATE(), CodEmpleadoPrep = @codigoEmpleado";
+                        cmd.CommandText += " WHERE Codigo = @codigoPedido";
+                        cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
+                        break;
+                }
+
+                cmd.Parameters.AddWithValue("codigoPedido", datos["CodigoPedido"]);
+
+                cn.Open();
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected != 0)
+                {
+                    var d = new Dictionary<string, string>();
+                    d.Add("CodigoPedido", datos["CodigoPedido"]);
+                    Pedido[] pedidos = ObtenerPedidos(d);
+
+                    pedido = pedidos[0];
+                    //Otras formas de hacer lo mismo, pero con métodos de extensión de C#:
+                    //pedido = pedidos.First<Pedido>(); 
+                    //pedido = pedidos.First();
+                }
+
+            }
+
+            return pedido;
+        }
+
         public static Pedido[] ObtenerPedidos(Dictionary<string, string> datos)
         {
             List<Pedido> pedidos = new List<Pedido>();
@@ -118,7 +162,6 @@ namespace PedidosCapaDAL
 
                     filtro += "CodigoCliente = @codigoCliente";
                     cmd.Parameters.AddWithValue("@codigoCliente", Convert.ToInt32(datos["CodigoCliente"]));
-
                 }
 
                 if (datos.ContainsKey("FechaDesde"))
@@ -131,7 +174,6 @@ namespace PedidosCapaDAL
                     filtro += "FechaPedido >= @fechaDesde";
                     string fechaDesdeTxt = Convert.ToDateTime(datos["FechaDesde"]).ToString("yyyy-MM-dd 23:59:59");
                     cmd.Parameters.AddWithValue("@fechaDesde", Convert.ToDateTime(fechaDesdeTxt));
-
                 }
 
                 if (datos.ContainsKey("FechaHasta"))
@@ -144,7 +186,17 @@ namespace PedidosCapaDAL
                     filtro += "FechaPedido <= @fechaHasta";
                     string fechaHastaTxt = Convert.ToDateTime(datos["FechaHasta"]).ToString("yyyy-MM-dd 23:59:59");
                     cmd.Parameters.AddWithValue("@fechaHasta", Convert.ToDateTime(fechaHastaTxt));
+                }
 
+                if (datos.ContainsKey("CodigoPedido"))
+                {
+                    if (filtro == "")
+                        filtro += " WHERE ";
+                    else
+                        filtro += " AND ";
+
+                    filtro += "Codigo = @codigoPedido";
+                    cmd.Parameters.AddWithValue("@codigoPedido", Convert.ToInt32(datos["CodigoPedido"]));
                 }
 
                 cmd.CommandText += filtro;
@@ -160,6 +212,16 @@ namespace PedidosCapaDAL
                     pedido.ImporteTotal = Convert.ToSingle(pedidosReader["ImporteTotal"]);
                     pedido.FechaPedido = Convert.ToDateTime(pedidosReader["FechaPedido"]);
                     pedido.FechaPedidoCadena = pedido.FechaPedido.ToString();
+
+                    if (pedidosReader["FechaPreparacion"] != DBNull.Value)
+                        pedido.FechaPreparacionCadena = Convert.ToDateTime(pedidosReader["FechaPreparacion"]).ToString();
+                    if (pedidosReader["CodEmpleadoPrep"] != DBNull.Value)
+                        pedido.CodigoEmpleadoPrep = Convert.ToInt32(pedidosReader["CodEmpleadoPrep"]);
+                    if (pedidosReader["FechaEnvio"] != DBNull.Value)
+                        pedido.FechaEnvioCadena = Convert.ToDateTime(pedidosReader["FechaEnvio"]).ToString();
+                    if (pedidosReader["CodEmpleadoEnv"] != DBNull.Value)
+                        pedido.CodigoEmpleadoEnv = Convert.ToInt32(pedidosReader["CodEmpleadoEnv"]);
+
                     pedidos.Add(pedido);
                 }
             }

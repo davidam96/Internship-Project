@@ -143,6 +143,30 @@ namespace WebApiPedidos.Controllers
             }
         }
 
+        [Route("api/General/ModificarPedido")]
+        [HttpPost]
+        public HttpResponseMessage ModificarPedido(object oDatos)
+        {
+            Dictionary<string, string> datos;
+
+            try
+            {
+                datos = JsonConvert.DeserializeObject<Dictionary<string, string>>(oDatos.ToString());
+
+                Pedido pedido = PedidosBL.ModificarPedido(datos);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(pedido), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Conflict);
+                response.ReasonPhrase = ex.Message;
+                return response;
+            }
+        }
+
 
     }
 }

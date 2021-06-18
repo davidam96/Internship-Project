@@ -37,7 +37,7 @@ function CargarPedidos(datos) {
     if (datos === undefined)
         var datos = {};
 
-    datos.CodigoCliente = cookies.CodigoCliente;
+    datos.CodigoCliente = cookies.CLI_CodigoCliente;
 
     $.ajax({
         url: destino,
@@ -84,7 +84,7 @@ function VerDetalle(codigoPedido) {
     var destino = '/Home/ObtenerLineasDetalle';
 
     var datos = {};
-    datos.codigoPedido = codigoPedido;
+    datos.CodigoPedido = codigoPedido;
 
     $.ajax({
         url: destino,

@@ -41,8 +41,6 @@ function CargarPedidos(datos) {
     if (datos === undefined)
         var datos = {};
 
-    //datos.codigoCliente = cookies.CodigoCliente;
-
     $.ajax({
         url: destino,
         method: "POST",
@@ -70,7 +68,7 @@ function CargarPedidos(datos) {
 }
 
 function CargarTablaPedidos(pedidos) {
-    var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th></tr>";
+    var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th><th>Preparación</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
@@ -79,6 +77,17 @@ function CargarTablaPedidos(pedidos) {
         cad += "<td>" + pedido.CodigoCliente + "</td>";
         cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
         cad += "<td>" + pedido.ImporteTotal.toFixed(2) + "€ </td>";
+
+        //Fecha Preparacion
+        cad += "<td>";
+        if (pedido.FechaPreparacionCadena != null)
+            cad += pedido.FechaPreparacionCadena;
+        else if (cookies.EMP_PuedePrepararPedidos) {
+            cad += '<button class="btn btn-success border-dark rounded"' +
+                'onclick="PrepararPedido(' + pedido.Codigo + ')">Preparar</button>';
+        }
+        cad += "</td>";
+
         cad += "</tr>";
     });
     $("#tablaPedidos").html(cad);
@@ -89,7 +98,7 @@ function VerDetalle(codigoPedido) {
     var destino = '/Home/ObtenerLineasDetalle';
 
     var datos = {};
-    datos.codigoPedido = codigoPedido;
+    datos.CodigoPedido = codigoPedido;
 
     $.ajax({
         url: destino,
@@ -149,4 +158,39 @@ function CargarTablaLineasDetalle(lineasDetalle) {
     });
     cad += '<tr><td colspan="5">Total... ' + total + "€ </td></tr>";
     $("#tablaDetalle").html(cad);
+}
+
+function PrepararPedido(codigoPedido) {
+
+    var destino = '/Home/PrepararPedido';
+
+    var datos = {};
+    datos.CodigoPedido = codigoPedido;
+    datos.CodigoEmpleado = cookies.EMP_CodigoEmpleado;
+
+    $.ajax({
+        url: destino,
+        method: "POST",
+        data: JSON.stringify(datos), // --> datos que enviamos al servidor
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            if (respuesta.Error === undefined) {
+                //Todo ok.
+                alert("Fecha preparacion: " + respuesta.Fecha);
+            }
+            else {
+                alert(respuesta.Error);
+            }
+        },
+        error: function (e) {
+            var msg = "Error no controlado en llamada a " + destino;
+            if (e !== undefined && e !== null && e !== "")
+                if (e.statusText !== "")
+                    msg += "\n" + e.statusText;
+                else
+                    msg += "\n" + e;
+            alert(msg);
+        }
+    });
 }

@@ -40,34 +40,52 @@ namespace ProyectoPedidos.Controllers
             var cliente = ConectorAPI.ValidarCliente(txtMail, txtPassword);
 
             //Comprobamos que el cliente no sea nulo,
-            //pues de lo contrario el loguin no es válido.
+            //pues de lo contrario el login no es válido.
             if (cliente == null)
             {
                 ViewBag.Error = "Usuario o contraseña incorrectos.";
                 return View("LoginConLayout");
             }
 
-            //Creamos varias cookies en el servidor que enviaremos al cliente
-            Response.Cookies.Add(new HttpCookie("CodigoCliente", cliente.Codigo.ToString()));
-            Response.Cookies.Add(new HttpCookie("NombreCliente", cliente.NombreCliente + " " + cliente.ApellidosCliente));
+            //Creamos varias cookies en el servidor que enviaremos al cliente (navegador)
+            Response.Cookies.Add(new HttpCookie("CLI_CodigoCliente", cliente.Codigo.ToString()));
+            Response.Cookies.Add(new HttpCookie("CLI_NombreCliente", cliente.NombreCliente + " " + cliente.ApellidosCliente));
+
+            #region Hay que ponerlo en TODOS los métodos que devuelvan una vista del cliente:
+
+            ViewBag.TipoLogout = "LogoutCliente";
+            var c = new HttpCookie("Tipo", "Cliente");
+            Response.Cookies.Add(c);
+
+            #endregion
 
             return View("ListaPedidosCliente");
         }
 
         public ActionResult LogoutCliente()
         {
-            //Para eliminar cookies del cliente, ESTO NO FUNCIONA:
-            //Response.Cookies.Remove("CodigoCliente");
+            //Para eliminar cookies del navegador, ESTO NO FUNCIONA:
+            //Response.Cookies.Remove("CLI_CodigoCliente");
 
-            //Esta es la única manera de hacer que una cookie
-            //del cliente (el navegador) se pueda eliminar.
-            var c1 = Request.Cookies["CodigoCliente"];
-            c1.Expires = DateTime.Now.AddDays(-1);
-            Response.Cookies.Add(c1);
+            HttpCookie c;
 
-            var c2 = new HttpCookie("NombreCliente");
-            c1.Expires = DateTime.Now.AddDays(-1);
-            Response.Cookies.Add(c2);
+            foreach (string key in Request.Cookies.AllKeys)
+            {
+                if (key.StartsWith("CLI"))
+                {
+                    //Esta es la única manera de hacer que una cookie del
+                    //lado del cliente (el navegador) se pueda eliminar. 
+
+                    c = Request.Cookies[key]; // --> Opcion 1
+                    //var cookie = new HttpCookie(key); // --> Opcion 2
+                    c.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(c);
+                }
+            }
+
+            //Cookie temporal para el control correcto del logout
+            c = new HttpCookie("Tipo", "Logout");
+            Response.Cookies.Add(c);
 
             return View("LoginConLayout");
         }
@@ -102,7 +120,7 @@ namespace ProyectoPedidos.Controllers
             try
             {
                 //El codigo de cliente es necesario para identificar al pedido
-                int codigoCliente = int.Parse(Request.Cookies["CodigoCliente"].Value);
+                int codigoCliente = int.Parse(Request.Cookies["CLI_CodigoCliente"].Value);
 
                 //Creamos un diccionario para almacenar varios datos diferentes bajo una
                 //misma estructura de datos, dado que en el método 'HacerPedido()' de la
@@ -148,13 +166,31 @@ namespace ProyectoPedidos.Controllers
 
         public ActionResult HacerPedido()
         {
+            #region Hay que ponerlo en TODOS los métodos que devuelvan una vista del cliente:
+
+            ViewBag.TipoLogout = "LogoutCliente";
+            var c = new HttpCookie("Tipo", "Cliente");
+            Response.Cookies.Add(c);
+
+            #endregion
+
             return View();
         }
 
         public ActionResult ListaPedidosCliente()
         {
-            if (Request.Cookies.AllKeys.Contains("CodigoCliente"))
-            return View();
+            if (Request.Cookies.AllKeys.Contains("CLI_CodigoCliente"))
+            {
+                #region Hay que ponerlo en TODOS los métodos que devuelvan una vista del cliente:
+
+                ViewBag.TipoLogout = "LogoutCliente";
+                var c = new HttpCookie("Tipo", "Cliente");
+                Response.Cookies.Add(c);
+
+                #endregion
+
+                return View();
+            }
 
             //Aqui no escribimos 'return View("...")' porque
             //hacemos algo ANTES de devolver la vista:
@@ -184,19 +220,77 @@ namespace ProyectoPedidos.Controllers
             var empleado = ConectorAPI.ValidarEmpleado(txtNombreEmpleado, txtPassword);
 
             //Comprobamos que el empleado no sea nulo,
-            //pues de lo contrario el loguin no es válido.
+            //pues de lo contrario el login no es válido.
             if (empleado == null)
             {
                 ViewBag.Error = "Usuario o contraseña incorrectos.";
                 return View("LoginConLayout");
             }
 
-            //Creamos varias cookies en el servidor que enviaremos al cliente
-            Response.Cookies.Add(new HttpCookie("CodigoEmpleado", empleado.Codigo.ToString()));
-            Response.Cookies.Add(new HttpCookie("NombreEmpleado", empleado.Nombre + " " + empleado.Apellidos));
+            //Creamos varias cookies en el servidor que enviaremos al cliente (navegador)
+            Response.Cookies.Add(new HttpCookie("EMP_CodigoEmpleado", empleado.Codigo.ToString()));
+            Response.Cookies.Add(new HttpCookie("EMP_NombreEmpleado", empleado.Nombre + " " + empleado.Apellidos));
+            Response.Cookies.Add(new HttpCookie("EMP_PuedePrepararPedidos",  empleado.PuedePrepararPedidos.ToString()));
+            Response.Cookies.Add(new HttpCookie("EMP_PuedeEnviarPedidos",  empleado.PuedeEnviarPedidos.ToString()));
+
+            #region Hay que ponerlo en TODOS los métodos que devuelvan una vista del empleado:
+
+            ViewBag.TipoLogout = "LogoutEmpleado";
+            var c = new HttpCookie("Tipo", "Empleado");
+            Response.Cookies.Add(c);
+
+            #endregion
 
             return View("ListaPedidosEmpleado");
 
+        }
+
+        public ActionResult LogoutEmpleado()
+        {
+            //Para eliminar cookies del navegador, ESTO NO FUNCIONA:
+            //Response.Cookies.Remove("EMP_CodigoEmpleado");
+
+            HttpCookie c;
+
+            foreach (string key in Request.Cookies.AllKeys)
+            {
+                if (key.StartsWith("EMP"))
+                {
+                    //Esta es la única manera de hacer que una cookie del
+                    //lado del cliente (el navegador) se pueda eliminar. 
+
+                    c = Request.Cookies[key]; // --> Opcion 1
+                    //var cookie = new HttpCookie(key); // --> Opcion 2
+                    c.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(c);
+                }
+            }
+
+            //Cookie temporal para el control correcto del logout
+            c = new HttpCookie("Tipo", "Logout");
+            Response.Cookies.Add(c);
+
+            return View("LoginConLayout");
+        }
+
+        public ActionResult PrepararPedido(int codigoPedido, int codigoEmpleado)
+        {
+            try
+            {
+                Dictionary<string, string> datos = new Dictionary<string, string>();
+                datos.Add("CodigoPedido", codigoPedido.ToString());
+                datos.Add("CodigoEmpleado", codigoEmpleado.ToString());
+                datos.Add("accion", "Preparar");
+
+                Pedido pedido = ConectorAPI.ModificarPedido(datos);
+
+                return Json(new { Fecha = pedido.FechaPreparacionCadena }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 
