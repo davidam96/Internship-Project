@@ -15,8 +15,10 @@ namespace ModeloDatos
         public string FechaPedidoCadena { get; set; }
         public string FechaPreparacionCadena { get; set; } = null;
         public int? CodigoEmpleadoPrep { get; set; } = null;
+        public string NombreEmpleadoPrep { get; set; } = null;
         public string FechaEnvioCadena { get; set; } = null;
         public int? CodigoEmpleadoEnv { get; set; } = null;
+        public string NombreEmpleadoEnv { get; set; } = null;
         public string FechaCancelacionCadena { get; set; } = null;
     }
 }

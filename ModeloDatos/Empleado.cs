@@ -15,5 +15,9 @@ namespace ModeloDatos
         public string Apellidos { get; set; }
         public bool PuedePrepararPedidos { get; set; }
         public bool PuedeEnviarPedidos { get; set; }
+        public string NombreCompleto
+        {
+            get { return (Nombre + " " + Apellidos); }
+        }
     }
 }

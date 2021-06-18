@@ -41,6 +41,8 @@ function CargarPedidos(datos) {
     if (datos === undefined)
         var datos = {};
 
+    datos.IncluirEmpleados = true;
+
     $.ajax({
         url: destino,
         method: "POST",
@@ -71,6 +73,7 @@ function CargarTablaPedidos(pedidos) {
     var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th><th>Preparación</th><th>Envío</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
+
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
             'onclick="VerDetalle(' + pedido.Codigo + ')">Ver</button></td>';
         cad += "<td>" + pedido.Codigo + "</td>";
@@ -80,8 +83,15 @@ function CargarTablaPedidos(pedidos) {
 
         //Fecha Preparacion
         cad += "<td>";
-        if (pedido.FechaPreparacionCadena != null)
-            cad += pedido.FechaPreparacionCadena;
+        if (pedido.FechaPreparacionCadena != null) {
+            let texto = "Código empleado: " + pedido.CodigoEmpleadoPrep + "\n";
+            texto += "Nombre empleado: " + pedido.NombreEmpleadoPrep;
+            cad += '<span title="' + texto + '">' + pedido.FechaPreparacionCadena + "</span>";
+        }
+        else if (pedido.FechaCancelacionCadena != null) {
+            cad += '<span class="text-danger" title="Pedido cancelado en fecha ' + pedido.FechaCancelacionCadena;
+            cad += '"><b>Cancelado</b></span>';
+        }
         else if (cookies.EMP_PuedePrepararPedidos) {
             cad += '<button class="btn btn-success border-dark rounded"' +
                 'onclick="PrepararPedido(' + pedido.Codigo + ')">Preparar</button>';
@@ -90,11 +100,18 @@ function CargarTablaPedidos(pedidos) {
 
         //Fecha Envio
         cad += "<td>";
-        if (pedido.FechaEnvioCadena != null)
-            cad += pedido.FechaEnvioCadena;
+        if (pedido.FechaEnvioCadena != null) {
+            let texto = "Código empleado: " + pedido.CodigoEmpleadoEnv + "\n";
+            texto += "Nombre empleado: " + pedido.NombreEmpleadoEnv;
+            cad += '<span title="' + texto + '">' + pedido.FechaEnvioCadena + "</span>";
+        }
+        else if (pedido.FechaCancelacionCadena != null) {
+            cad += '<span class="text-danger" title="Pedido cancelado en fecha ' + pedido.FechaCancelacionCadena;
+            cad += '"><b>Cancelado</b></span>';
+        }
         else if (cookies.EMP_PuedeEnviarPedidos) {
-            cad += '<button class="btn btn-warning border-dark rounded"' +
-                'onclick="EnviarPedido(' + pedido.Codigo + ')" ';
+            cad += '<button class="btn btn-warning border-dark rounded" ';
+            cad += 'onclick="EnviarPedido(' + pedido.Codigo + ')" ';
             cad += (pedido.FechaPreparacionCadena === null ? 'disabled="disabled "' : "");
             cad +=  '>Enviar</button>';
         }

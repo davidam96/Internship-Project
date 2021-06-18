@@ -11,6 +11,49 @@ namespace PedidosCapaDAL
 {
     public class EmpleadosDAL
     {
+        public static List<Empleado> ObtenerEmpleados()
+        {
+            List<Empleado> empleados = new List<Empleado>();
+
+            //El using sirve para gestionar manualmente el 'Garbage Collection' de un objeto concreto,
+            //de tal forma que en vez de ponerlo en cola para su destrucción (ticks de reloj ~ x segundos),
+            //lo destruye de manera casi inmediata (ticks de reloj ~ x milisegundos).
+            using (SqlConnection cn = new SqlConnection())
+            {
+                cn.ConnectionString = Auxiliar.CadenaConexion;
+
+                //SqlCommand cmd = new SqlCommand(); 
+                //cmd.Connection = cn;
+                var cmd = cn.CreateCommand(); // --> Las dos líneas de arriba, en una sola.
+
+                cmd.CommandText = "SELECT * FROM Empleados";
+
+                cn.Open();
+
+                SqlDataReader datos = cmd.ExecuteReader();
+                while (datos.Read())
+                {
+                    Empleado empleado = new Empleado();
+                    empleado.Codigo = datos.GetInt32(0);
+                    empleado.NombreEmpleado = datos["NombreEmpleado"].ToString();
+                    empleado.Password = datos["Password"].ToString();
+                    empleado.Nombre = datos["Nombre"].ToString();
+                    empleado.Apellidos = datos["Apellidos"].ToString();
+
+                    if (datos["PuedePrepararPedidos"] != DBNull.Value)
+                        empleado.PuedePrepararPedidos = Convert.ToBoolean(datos["PuedePrepararPedidos"]);
+                    if (datos["PuedeEnviarPedidos"] != DBNull.Value)
+                        empleado.PuedeEnviarPedidos = Convert.ToBoolean(datos["PuedeEnviarPedidos"]);
+
+                    empleados.Add(empleado);
+                }
+
+                cn.Close();
+            }
+
+            return empleados;
+        }
+
         public static Empleado ObtenerEmpleado(string nombreEmpleado)
         {
             Empleado empleado = null;

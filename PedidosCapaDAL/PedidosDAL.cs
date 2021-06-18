@@ -114,12 +114,12 @@ namespace PedidosCapaDAL
                 {
                     case "Preparar":
                         cmd.CommandText += "FechaPreparacion = GETDATE(), CodEmpleadoPrep = @codigoEmpleado";
-                        cmd.CommandText += " WHERE Codigo = @codigoPedido";
+                        cmd.CommandText += " WHERE Codigo = @codigoPedido AND FechaPreparacion IS NULL AND FechaCancelacion IS NULL";
                         cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
                         break;
                     case "Enviar":
                         cmd.CommandText += "FechaEnvio = GETDATE(), CodEmpleadoEnv = @codigoEmpleado";
-                        cmd.CommandText += " WHERE Codigo = @codigoPedido";
+                        cmd.CommandText += " WHERE Codigo = @codigoPedido AND FechaEnvio IS NULL AND FechaCancelacion IS NULL";
                         cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
                         break;
                     case "Cancelar":
@@ -224,14 +224,18 @@ namespace PedidosCapaDAL
 
                     if (pedidosReader["FechaPreparacion"] != DBNull.Value)
                         pedido.FechaPreparacionCadena = Convert.ToDateTime(pedidosReader["FechaPreparacion"]).ToString();
-                    if (pedidosReader["CodEmpleadoPrep"] != DBNull.Value)
-                        pedido.CodigoEmpleadoPrep = Convert.ToInt32(pedidosReader["CodEmpleadoPrep"]);
                     if (pedidosReader["FechaEnvio"] != DBNull.Value)
                         pedido.FechaEnvioCadena = Convert.ToDateTime(pedidosReader["FechaEnvio"]).ToString();
-                    if (pedidosReader["CodEmpleadoEnv"] != DBNull.Value)
-                        pedido.CodigoEmpleadoEnv = Convert.ToInt32(pedidosReader["CodEmpleadoEnv"]);
                     if (pedidosReader["FechaCancelacion"] != DBNull.Value)
                         pedido.FechaCancelacionCadena = Convert.ToDateTime(pedidosReader["FechaCancelacion"]).ToString();
+
+                    if (datos.ContainsKey("IncluirEmpleados") && bool.Parse(datos["IncluirEmpleados"]))
+                    {
+                        if (pedidosReader["CodEmpleadoPrep"] != DBNull.Value)
+                            pedido.CodigoEmpleadoPrep = Convert.ToInt32(pedidosReader["CodEmpleadoPrep"]);
+                        if (pedidosReader["CodEmpleadoEnv"] != DBNull.Value)
+                            pedido.CodigoEmpleadoEnv = Convert.ToInt32(pedidosReader["CodEmpleadoEnv"]);
+                    }
 
                     pedidos.Add(pedido);
                 }

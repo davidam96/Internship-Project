@@ -141,7 +141,7 @@ namespace ProyectoPedidos.Controllers
             }
         }
 
-        public ActionResult ObtenerPedidos(int? codigoCliente, DateTime? fechaDesde, DateTime? fechaHasta)
+        public ActionResult ObtenerPedidos(int? codigoCliente, DateTime? fechaDesde, DateTime? fechaHasta, bool? incluirEmpleados)
         {
             try
             {
@@ -153,6 +153,8 @@ namespace ProyectoPedidos.Controllers
                     datos.Add("FechaDesde", fechaDesde.ToString());
                 if (fechaDesde.HasValue)
                     datos.Add("FechaHasta", fechaHasta.ToString());
+                if (incluirEmpleados.HasValue)
+                    datos.Add("IncluirEmpleados", incluirEmpleados.ToString());
 
                 Pedido[] p = ConectorAPI.ObtenerPedidos(datos);
 
@@ -285,7 +287,10 @@ namespace ProyectoPedidos.Controllers
 
                 Pedido pedido = ConectorAPI.ModificarPedido(datos);
 
-                return Json(new { Fecha = pedido.FechaPreparacionCadena }, JsonRequestBehavior.AllowGet);
+                if (pedido != null)
+                    return Json(new { Fecha = pedido.FechaPreparacionCadena }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { Error = "No se puede preparar el pedido, actualice los datos." }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -305,8 +310,10 @@ namespace ProyectoPedidos.Controllers
 
                 Pedido pedido = ConectorAPI.ModificarPedido(datos);
 
-                return Json(new { Fecha = pedido.FechaEnvioCadena }, JsonRequestBehavior.AllowGet);
-
+                if (pedido != null)
+                    return Json(new { Fecha = pedido.FechaEnvioCadena }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { Error = "No se puede enviar el pedido, actualice los datos." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -322,7 +329,7 @@ namespace ProyectoPedidos.Controllers
                 datos.Add("CodigoPedido", codigoPedido.ToString());
                 datos.Add("accion", "Cancelar");
 
-                Thread.Sleep(2000); //BORRA ESTA LINEA
+                Thread.Sleep(1000); //BORRA ESTA LINEA
 
                 Pedido pedido = ConectorAPI.ModificarPedido(datos);
 

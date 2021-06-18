@@ -69,6 +69,7 @@ function CargarTablaPedidos(pedidos) {
     var cad = "<tr><th>Acciones</th><th>Código</th><th>Fecha</th><th>Importe</th><th>Envío</th></tr>";
     pedidos.forEach((pedido) => {
         cad += "<tr>";
+
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
             'onclick="VerDetalle(' + pedido.Codigo + ')">Ver</button></td>';
         cad += "<td>" + pedido.Codigo + "</td>";
@@ -80,10 +81,13 @@ function CargarTablaPedidos(pedidos) {
         if (pedido.FechaEnvioCadena != null)
             cad += pedido.FechaEnvioCadena;
         else if (pedido.FechaCancelacionCadena != null) {
-            cad += '<b class="text-danger">Cancelado</b>';
-        } else {
-            cad += '<button class="btn btn-danger border-dark rounded"' +
-                'onclick="CancelarPedido(' + pedido.Codigo + ')" ';
+            cad += '<span class="text-danger" title="Pedido cancelado en fecha ' + pedido.FechaCancelacionCadena;
+            cad += '"><b>Cancelado</b></span>';
+        }
+        else {
+            cad += '<button class="btn btn-danger border-dark rounded" ';
+            cad += 'onclick="CancelarPedido(' + pedido.Codigo + ')" ';
+            cad += 'title="Cancelar pedido pendiente \n de preparar o enviar"';
             cad += '>Cancelar</button>';
         }
         cad += "</td>";
@@ -190,6 +194,7 @@ function CancelarPedido(codigoPedido) {
     $.ajax({
         url: destino,
         method: "POST",
+        //async: false, // --> bloquea el navegador hasta terminar y retornar la peticion
         data: JSON.stringify(datos), // --> datos que enviamos al servidor
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
