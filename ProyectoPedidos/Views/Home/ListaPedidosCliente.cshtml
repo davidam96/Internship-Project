@@ -21,34 +21,61 @@
 
 
 @* TABLA PEDIDOS DEL CLIENTE *@
-<table id="tablaPedidos" class="table mx-auto mt-3"></table>
-
-
-@* TABLA DETALLE DE UN PEDIDO *@
-<div id="divDetalle" class="justify-content-start d-none">
-
-    <div class="text-justify pl-md-3">
-        <h2 class="mt-5 mb-3">Detalle del Pedido</h2>
-
-
-        <label><b>Código pedido: &nbsp;</b></label>
-        <label id="lblCodigoPedido"></label>
-        <br />
-
-        <label><b>Fecha pedido: &nbsp;</b></label>
-        <label id="lblFechaPedido"></label>
-        <br />
-
-        <label><b>Importe pedido: &nbsp;</b></label>
-        <label id="lblImportePedido"></label>
-        <br />
-    </div>
-
-    <table id="tablaDetalle" class="table mx-auto mt-4"></table>
-
+<div class="table-responsive">
+    <table id="tablaPedidos" class="table mx-auto mt-3"></table>
 </div>
+
+@* MODAL DETALLE DE UN PEDIDO *@
+<div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-light">Detalle del Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+
+                    @* TABLA DETALLE DE UN PEDIDO *@
+                    <table id="tablaDetalle" class="table table-hover"></table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @* BOTON HACER NUEVO PEDIDO *@
 <a href="/Home/HacerPedido" style="font-size: 24px;"
    class="btn btn-warning border-dark rounded my-4 px-5">Nuevo pedido</a>
+
+
+@* TABLA DETALLE DE UN PEDIDO
+
+    <div id="divDetalle" class="justify-content-start d-none">
+
+        <div class="text-justify pl-md-3">
+            <h2 class="mt-5 mb-3">Detalle del Pedido</h2>
+
+
+            <label><b>Código pedido: &nbsp;</b></label>
+            <label id="lblCodigoPedido"></label>
+            <br />
+
+            <label><b>Fecha pedido: &nbsp;</b></label>
+            <label id="lblFechaPedido"></label>
+            <br />
+
+            <label><b>Importe pedido: &nbsp;</b></label>
+            <label id="lblImportePedido"></label>
+            <br />
+        </div>
+
+        <table id="tablaDetalle" class="table mx-auto mt-4"></table>
+
+    </div>
+*@
 

@@ -74,8 +74,12 @@ function CargarTablaPedidos(pedidos) {
     pedidos.forEach((pedido) => {
         cad += "<tr>";
 
+        //Boton Ver
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
-            'onclick="VerDetalle(' + pedido.Codigo + ')">Ver</button></td>';
+            'onclick="VerDetalle(' + pedido.Codigo + ')" ';
+        cad += 'data-toggle="modal" data-target="#modalDetalle"';
+        cad += '> Ver</button ></td > ';
+
         cad += "<td>" + pedido.Codigo + "</td>";
         cad += "<td>" + pedido.CodigoCliente + "</td>";
         cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
@@ -119,6 +123,7 @@ function CargarTablaPedidos(pedidos) {
 
         cad += "</tr>";
     });
+
     $("#tablaPedidos").html(cad);
 }
 
@@ -145,9 +150,9 @@ function VerDetalle(codigoPedido) {
                 });
 
                 if (fila !== undefined) {
-                    $("#lblCodigoPedido").html(codigoPedido);
-                    $("#lblFechaPedido").text(fila.children().eq(3).text());
-                    $("#lblImportePedido").text(fila.children().eq(4).text());
+                    //$("#lblCodigoPedido").html(codigoPedido);
+                    //$("#lblFechaPedido").text(fila.children().eq(3).text());
+                    //$("#lblImportePedido").text(fila.children().eq(4).text());
 
                     CargarTablaLineasDetalle(respuesta.LineasDetalle);
 
@@ -172,8 +177,18 @@ function VerDetalle(codigoPedido) {
 }
 
 function CargarTablaLineasDetalle(lineasDetalle) {
-    var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr>";
+
     var total = 0;
+    var cad = "";
+
+    //Cabecera tabla
+    cad += "<thead>";
+    cad += '<tr class="table-secondary">';
+    cad += "<th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th>";
+    cad += "</tr></thead>";
+
+    //Cuerpo tabla
+    cad += "<tbody>";
     lineasDetalle.forEach((lineaDetalle) => {
         cad += "<tr>";
         cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
@@ -185,7 +200,12 @@ function CargarTablaLineasDetalle(lineasDetalle) {
         total += parseFloat(subtotal);
         cad += "</tr>";
     });
-    cad += '<tr><td colspan="5">Total... ' + total + "€ </td></tr>";
+
+    //Importe total
+    cad += '<tr><td colspan="5"><span style="font-size: 28px;">';
+    cad += '<b>Total: </b>' + total + "€ </span></td></tr>";
+
+    cad += "</tbody>";
     $("#tablaDetalle").html(cad);
 }
 

@@ -2,15 +2,19 @@
     max-width: 100px;
     width: 100px !important;
 }
+
 .grid-container {
     display: grid;
 }
+
 .bg-cabecera {
     background-color: rgba(140.8, 228.1, 221.0, 0.9); 
 }
+
 #modalLogin form label {
     width: 110px;
 }
+
 #login .btn,
 #logout .btn {
     width: 200px;
@@ -19,13 +23,10 @@
 /*NOTA: Un ID puede estar "duplicado", siempre y cuando sea único
         dentro de la página del navegador (árbol DOM) abierta.
 */
-#tablaDetalle,
 #tablaPedidos {
     border: 3px solid black;
 }
 
-#tablaDetalle th,
-#tablaDetalle td,
 #tablaPedidos th,
 #tablaPedidos td {
     border: 1px solid black;

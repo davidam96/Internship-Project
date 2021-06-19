@@ -56,14 +56,24 @@ function OnShowModalLogin() {
         var esCliente = button.data('esCliente');
         if (esCliente) {
             $('#modalLogin .modal-title').text("Login Cliente");
+
             $('#modalLogin .modal-header').removeClass("bg-success");
             $('#modalLogin .modal-header').addClass("bg-primary");
+
+            $('#modalLogin button[type="submit"]').removeClass("bg-success");
+            $('#modalLogin button[type="submit"]').addClass("bg-primary");
+
             $('#formLogin').attr("action", "/Home/ValidarCliente");
             $('#username').attr("name", "txtMail");
         } else {
             $('#modalLogin .modal-title').text("Login Empleado");
+
             $('#modalLogin .modal-header').removeClass("bg-primary");
             $('#modalLogin .modal-header').addClass("bg-success");
+
+            $('#modalLogin button[type="submit"]').removeClass("bg-primary");
+            $('#modalLogin button[type="submit"]').addClass("bg-success");
+
             $('#formLogin').attr("action", "/Home/ValidarEmpleado");
             $('#username').attr("name", "txtNombreEmpleado");
         }
