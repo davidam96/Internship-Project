@@ -7,7 +7,7 @@ $(document).ready(function () {
 
 });
 
-function FiltrarFechaPedidos() {
+function FiltrarPedidos() {
     let fDesde = $("#fechaDesde").val();
     let fHasta = $("#fechaHasta").val();
 
@@ -28,6 +28,7 @@ function FiltrarFechaPedidos() {
 function QuitarFiltros() {
     $("#fechaDesde").val("");
     $("#fechaHasta").val("");
+    CargarPedidos();
 }
 
 function CargarPedidos(datos) {
@@ -125,12 +126,9 @@ function VerDetalle(codigoPedido) {
                 });
 
                 if (fila !== undefined) {
-                    //$("#lblCodigoPedido").html(codigoPedido);
-                    //$("#lblFechaPedido").text(fila.children().eq(2).text());
-                    //$("#lblImportePedido").text(fila.children().eq(3).text());
-
+                    $("#lblCodigoPedido").html(codigoPedido);
+                    $("#lblFechaPedido").text(fila.children().eq(2).text());
                     CargarTablaLineasDetalle(respuesta.LineasDetalle);
-
                     //$("#divDetalle").css("display", "");
                     $("#divDetalle").removeClass("d-none");
                 }

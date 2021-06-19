@@ -32,6 +32,7 @@ function QuitarFiltros() {
     $("#codigoCliente").val("");
     $("#fechaDesde").val("");
     $("#fechaHasta").val("");
+    CargarPedidos();
 }
 
 function CargarPedidos(datos) {
@@ -150,12 +151,9 @@ function VerDetalle(codigoPedido) {
                 });
 
                 if (fila !== undefined) {
-                    //$("#lblCodigoPedido").html(codigoPedido);
-                    //$("#lblFechaPedido").text(fila.children().eq(3).text());
-                    //$("#lblImportePedido").text(fila.children().eq(4).text());
-
+                    $("#lblCodigoPedido").html(codigoPedido);
+                    $("#lblFechaPedido").text(fila.children().eq(3).text());
                     CargarTablaLineasDetalle(respuesta.LineasDetalle);
-
                     //$("#divDetalle").css("display", "");
                     $("#divDetalle").removeClass("d-none");
                 }

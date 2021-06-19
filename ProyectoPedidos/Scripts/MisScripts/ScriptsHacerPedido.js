@@ -113,8 +113,8 @@ function NuevoProducto() {
     });
 
     //Actualizamos la info de todo el pedido
-    var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr>";
     var total = 0;
+    var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr>";
     lineasDetalle.forEach((lineaDetalle) => {
         cad += "<tr>";
         cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
@@ -126,8 +126,15 @@ function NuevoProducto() {
         total += parseFloat(subtotal);
         cad += "</tr>";
     });
-    cad += '<tr><td colspan="5">Total... ' + total + "€ </td></tr>";
-    $("#tablaDetalle").html(cad);
+    cad += '<tr><td colspan="5"><span style="font-size: 28px;">';
+    cad += '<b>Total: </b>' + total + "€ </span></td></tr>";
+    $("#tablaLineasDetalle").html(cad);
+
+    //Activamos el boton de hacer pedido
+    $("#btnHacerPedido").removeAttr("disabled");
+
+    //Borramos las unidades del pedido anterior
+    $("#txtUnidades").val("");
 }
 
 /** Da de alta el pedido en la BBDD */
@@ -146,6 +153,13 @@ function CrearPedido() {
             if (respuesta.Error === undefined) {
                 var p = respuesta.Pedido;
                 alert("Pedido " + p.Codigo + " creado correctamente");
+
+                //Desactivamos el boton de hacer pedido
+                $("#btnHacerPedido").attr("disabled", "disabled");
+
+                //Eliminamos las lineas de detalle creadas del pedido anterior
+                //(en caso de que hagamos mas de 2 pedidos antes de salir)
+                $("#tablaLineasDetalle").html("");
             }
             else {
                 alert(respuesta.Error);

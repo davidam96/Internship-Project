@@ -9,16 +9,49 @@
     Layout = "~/Views/Shared/_LayoutPractica.cshtml";
 }
 
-<h2>Hacer Pedido</h2>
+@* CARD HACER PEDIDO *@
+<div class="card text-white bg-info my-3">
 
-<select id="cmbProductos"></select>
+    <div class="card-header">
+        <h2>Hacer Pedido</h2>
+    </div>
 
-Unidades
-<input id="txtUnidades" />
-<button id="btnAnadir" onclick="NuevoProducto()">Añadir</button>
+    <div class="card-body row pt-4 px-5">
+        @* CONTROLES AÑADIR PRODUCTOS *@
 
-<table id="tablaDetalle" class="table mx-auto my-5"></table>
+        <div class="col-12 col-md-6 text-md-right">
+            <select id="cmbProductos" class="py-1 mb-2 rounded"></select>
+        </div>
+        <div class="col-12 col-md-6 text-md-left">
+            <input id="txtUnidades" class="mb-3 rounded" placeholder="Unidades" />
+            <button id="btnAnadir" class="btn btn-light border-dark mb-2 py-1"
+                    onclick="NuevoProducto()">
+                Añadir
+            </button>
+        </div>
 
-<button id="btnHacerPedido" class="w-25" onclick="CrearPedido()">Hacer Pedido</button>
+        @* TABLA LINEAS DETALLE *@
+        <div class="table-responsive mb-5">
+            <table id="tablaLineasDetalle" class="table bg-light"></table>
+        </div>
 
-<button onclick="VolverAListaPedidos()">Volver a Lista de Pedidos</button>
+        @* BOTON HACER PEDIDO *@
+        <div class="col-12 col-md-6 text-md-right">
+            <button id="btnHacerPedido" class="btn btn-warning border-dark mb-2 px-5"
+                    onclick="CrearPedido()" disabled="disabled">
+                Hacer Pedido
+            </button>
+        </div>
+
+        @* BOTON VOLVER *@
+        <div class="col-12 col-md-6 text-md-left">
+            <button class="btn btn-secondary border-dark mb-2 px-3"
+                    onclick="VolverAListaPedidos()">
+                Volver a Lista de Pedidos
+            </button>
+        </div>
+
+    </div>
+
+</div>
+

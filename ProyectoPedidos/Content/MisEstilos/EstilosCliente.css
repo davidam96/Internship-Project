@@ -23,12 +23,15 @@
 /*NOTA: Un ID puede estar "duplicado", siempre y cuando sea único
         dentro de la página del navegador (árbol DOM) abierta.
 */
-#tablaPedidos {
+#tablaPedidos,
+#tablaLineasDetalle {
     border: 3px solid black;
 }
 
 #tablaPedidos th,
-#tablaPedidos td {
+#tablaPedidos td,
+#tablaLineasDetalle th,
+#tablaLineasDetalle td {
     border: 1px solid black;
 }
 
