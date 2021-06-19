@@ -12,16 +12,18 @@
 <h2>Pedidos Cliente</h2>
 
 @* FILTRAR PEDIDOS POR FECHA *@
-<form class="row justify-content-center mt-md-5">
-    <div class="col-12 col-md-4 mb-2">
-        Desde <input id="fechaDesde" type="date" />
+<form class="row d-flex justify-content-center mt-5">
+    <div class="col-12 col-md-6 mt-2">      
+        <div class="d-block d-xl-inline pr-2">
+            Desde <input id="fechaDesde" type="date" class="mb-1 mr-3" />
+        </div>
+        <div class="d-block d-xl-inline pr-2">
+            Hasta <input id="fechaHasta" type="date" class="mb-1" />
+        </div>
     </div>
-    <div class="col-12 col-md-4 mb-2">
-        Hasta <input id="fechaHasta" type="date" />
-    </div>
-    <div class="col-12 col-md-4 mb-2">
-        <input type="button" value="Filtrar" onclick="FiltrarPedidos()" />
-        <input type="button" value="Limpiar filtros" onclick="QuitarFiltros()" />
+    <div class="col-12 col-md-3 text-md-left mt-2">
+        <input type="button" value="Filtrar" class="px-4 mx-1 mb-1" onclick="FiltrarPedidos()" />
+        <input type="button" value="Limpiar filtros" class="px-3 mx-1" onclick="QuitarFiltros()" />
     </div>
 </form>
 
