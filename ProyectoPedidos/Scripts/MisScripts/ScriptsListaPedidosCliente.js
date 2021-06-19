@@ -68,19 +68,19 @@ function CargarPedidos(datos) {
 function CargarTablaPedidos(pedidos) {
     var cad = "<tr><th>Acciones</th><th>Código</th><th>Fecha</th><th>Importe</th><th>Envío</th></tr>";
     pedidos.forEach((pedido) => {
-        cad += "<tr>";
+        cad += '<tr ' + (pedido.FechaCancelacionCadena !== null ? 'class="pedidoCancelado"' : "") + '>';
 
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
             'onclick="VerDetalle(' + pedido.Codigo + ')">Ver</button></td>';
-        cad += "<td>" + pedido.Codigo + "</td>";
-        cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
-        cad += "<td>" + pedido.ImporteTotal.toFixed(2) + "€ </td>";
+        cad += "<td><span>" + pedido.Codigo + "</span></td>";
+        cad += "<td><span>" + pedido.FechaPedidoCadena + "</span></td>";
+        cad += "<td><span>" + pedido.ImporteTotal.toFixed(2) + "€ </span></td>";
 
         //Fecha Envio
         cad += "<td>";
-        if (pedido.FechaEnvioCadena != null)
+        if (pedido.FechaEnvioCadena !== null)
             cad += pedido.FechaEnvioCadena;
-        else if (pedido.FechaCancelacionCadena != null) {
+        else if (pedido.FechaCancelacionCadena !== null) {
             cad += '<span class="text-danger" title="Pedido cancelado en fecha ' + pedido.FechaCancelacionCadena;
             cad += '"><b>Cancelado</b></span>';
         }

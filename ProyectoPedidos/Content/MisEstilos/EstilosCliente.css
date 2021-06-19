@@ -23,9 +23,15 @@
 #tablaPedidos {
     border: 3px solid black;
 }
+
 #tablaDetalle th,
 #tablaDetalle td,
 #tablaPedidos th,
 #tablaPedidos td {
     border: 1px solid black;
+}
+
+/* Con este estilo tachamos un texto */
+.pedidoCancelado span:not(.text-danger) {
+    text-decoration: line-through;
 }

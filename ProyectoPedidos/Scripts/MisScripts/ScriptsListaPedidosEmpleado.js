@@ -83,12 +83,12 @@ function CargarTablaPedidos(pedidos) {
 
         //Fecha Preparacion
         cad += "<td>";
-        if (pedido.FechaPreparacionCadena != null) {
+        if (pedido.FechaPreparacionCadena !== null) {
             let texto = "Código empleado: " + pedido.CodigoEmpleadoPrep + "\n";
             texto += "Nombre empleado: " + pedido.NombreEmpleadoPrep;
             cad += '<span title="' + texto + '">' + pedido.FechaPreparacionCadena + "</span>";
         }
-        else if (pedido.FechaCancelacionCadena != null) {
+        else if (pedido.FechaCancelacionCadena !== null) {
             cad += '<span class="text-danger" title="Pedido cancelado en fecha ' + pedido.FechaCancelacionCadena;
             cad += '"><b>Cancelado</b></span>';
         }
@@ -100,12 +100,12 @@ function CargarTablaPedidos(pedidos) {
 
         //Fecha Envio
         cad += "<td>";
-        if (pedido.FechaEnvioCadena != null) {
+        if (pedido.FechaEnvioCadena !== null) {
             let texto = "Código empleado: " + pedido.CodigoEmpleadoEnv + "\n";
             texto += "Nombre empleado: " + pedido.NombreEmpleadoEnv;
             cad += '<span title="' + texto + '">' + pedido.FechaEnvioCadena + "</span>";
         }
-        else if (pedido.FechaCancelacionCadena != null) {
+        else if (pedido.FechaCancelacionCadena !== null) {
             cad += '<span class="text-danger" title="Pedido cancelado en fecha ' + pedido.FechaCancelacionCadena;
             cad += '"><b>Cancelado</b></span>';
         }
