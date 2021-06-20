@@ -115,12 +115,12 @@ namespace PedidosCapaDAL
                     case "Preparar":
                         cmd.CommandText += "FechaPreparacion = GETDATE(), CodEmpleadoPrep = @codigoEmpleado";
                         cmd.CommandText += " WHERE Codigo = @codigoPedido AND FechaPreparacion IS NULL AND FechaCancelacion IS NULL";
-                        cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
+                        cmd.Parameters.AddWithValue("@codigoEmpleado", datos["CodigoEmpleado"]);
                         break;
                     case "Enviar":
                         cmd.CommandText += "FechaEnvio = GETDATE(), CodEmpleadoEnv = @codigoEmpleado";
                         cmd.CommandText += " WHERE Codigo = @codigoPedido AND FechaEnvio IS NULL AND FechaCancelacion IS NULL";
-                        cmd.Parameters.AddWithValue("codigoEmpleado", datos["CodigoEmpleado"]);
+                        cmd.Parameters.AddWithValue("@codigoEmpleado", datos["CodigoEmpleado"]);
                         break;
                     case "Cancelar":
                         cmd.CommandText += "FechaCancelacion = GETDATE()";
@@ -128,7 +128,7 @@ namespace PedidosCapaDAL
                         break;
                 }
 
-                cmd.Parameters.AddWithValue("codigoPedido", datos["CodigoPedido"]);
+                cmd.Parameters.AddWithValue("@codigoPedido", datos["CodigoPedido"]);
 
                 cn.Open();
 
