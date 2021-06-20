@@ -167,29 +167,6 @@ namespace ProyectoPedidos.Clases
 
         #region Métodos públicos
 
-        //public static Dictionary<string, string> ValidarLoginUsuario(Dictionary<string, string> infoLogin)
-        //{
-        //    infoLogin["Login"] = bool.TrueString;
-        //    Dictionary<string, string> retorno;
-        //    string uri = "api/Usuarios/ValidarLoginUsuario";
-        //    HttpResponseMessage response = RespuestaPOST(uri, infoLogin);
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        retorno = response.Content.ReadAsAsync<Dictionary<string, string>>().Result;
-        //        if (retorno == null)
-        //        {
-        //            retorno = new Dictionary<string, string>();
-        //            retorno.Add("INFOACCESO vacío", "Error en llamada a " + uri + " - Motivo: " + response.ReasonPhrase);
-        //        }
-        //        return retorno;
-        //    }
-        //    else
-        //    {
-        //        throw new HttpRequestException(response.ReasonPhrase);
-        //    }
-        //}
-
         public static Cliente ValidarCliente(string txtMail, string txtPassword)
         {  
             Dictionary<string, string> infoConexion = new Dictionary<string, string>();
