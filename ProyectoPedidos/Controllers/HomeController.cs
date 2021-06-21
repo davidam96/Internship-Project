@@ -329,7 +329,9 @@ namespace ProyectoPedidos.Controllers
                 datos.Add("CodigoPedido", codigoPedido.ToString());
                 datos.Add("accion", "Cancelar");
 
-                Thread.Sleep(1000); //BORRA ESTA LINEA
+                //Le damos tiempo al usuario para que vea si el login
+                //es incorrecto, antes de que desaparezca dicho mensaje.
+                Thread.Sleep(10000);
 
                 Pedido pedido = ConectorAPI.ModificarPedido(datos);
 
