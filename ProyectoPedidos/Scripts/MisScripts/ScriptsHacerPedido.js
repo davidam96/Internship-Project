@@ -127,7 +127,7 @@ function NuevoProducto() {
         cad += "</tr>";
     });
     cad += '<tr><td colspan="5"><span style="font-size: 28px;">';
-    cad += '<b>Total: </b>' + total + "€ </span></td></tr>";
+    cad += '<b>Total: </b>' + total.toFixed(2) + "€ </span></td></tr>";
     $("#tablaLineasDetalle").html(cad);
 
     //Activamos el boton de hacer pedido

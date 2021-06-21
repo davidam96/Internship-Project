@@ -176,7 +176,7 @@ function CargarTablaLineasDetalle(lineasDetalle) {
 
     //Importe total
     cad += '<tr><td colspan="5"><span style="font-size: 28px;">';
-    cad += '<b>Total: </b>' + total + "€ </span></td></tr>";
+    cad += '<b>Total: </b>' + total.toFixed(2) + "€ </span></td></tr>";
 
     cad += "</tbody>";
     $("#tablaDetalle").html(cad);

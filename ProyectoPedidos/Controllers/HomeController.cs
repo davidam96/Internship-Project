@@ -151,7 +151,7 @@ namespace ProyectoPedidos.Controllers
                     datos.Add("CodigoCliente", codigoCliente.ToString());
                 if (fechaDesde.HasValue)
                     datos.Add("FechaDesde", fechaDesde.ToString());
-                if (fechaDesde.HasValue)
+                if (fechaHasta.HasValue)
                     datos.Add("FechaHasta", fechaHasta.ToString());
                 if (incluirEmpleados.HasValue)
                     datos.Add("IncluirEmpleados", incluirEmpleados.ToString());

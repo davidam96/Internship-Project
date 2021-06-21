@@ -73,7 +73,7 @@ function CargarPedidos(datos) {
 function CargarTablaPedidos(pedidos) {
     var cad = "<tr><th>Acciones</th><th>Código</th><th>Cliente</th><th>Fecha</th><th>Importe</th><th>Preparación</th><th>Envío</th></tr>";
     pedidos.forEach((pedido) => {
-        cad += "<tr>";
+        cad += '<tr ' + (pedido.FechaCancelacionCadena !== null ? 'class="pedidoCancelado"' : "") + '>';
 
         //Boton Ver
         cad += '<td><button class="btn btn-primary border-dark rounded"' +
@@ -81,10 +81,10 @@ function CargarTablaPedidos(pedidos) {
         cad += 'data-toggle="modal" data-target="#modalDetalle"';
         cad += '> Ver</button ></td > ';
 
-        cad += "<td>" + pedido.Codigo + "</td>";
-        cad += "<td>" + pedido.CodigoCliente + "</td>";
-        cad += "<td>" + pedido.FechaPedidoCadena + "</td>";
-        cad += "<td>" + pedido.ImporteTotal.toFixed(2) + "€ </td>";
+        cad += "<td><span>" + pedido.Codigo + "</span></td>";
+        cad += "<td><span>" + pedido.CodigoCliente + "</span></td>";
+        cad += "<td><span>" + pedido.FechaPedidoCadena + "</span></td>";
+        cad += "<td><span>" + pedido.ImporteTotal.toFixed(2) + "€ </span></td>";
 
         //Fecha Preparacion
         cad += "<td>";
@@ -201,7 +201,7 @@ function CargarTablaLineasDetalle(lineasDetalle) {
 
     //Importe total
     cad += '<tr><td colspan="5"><span style="font-size: 28px;">';
-    cad += '<b>Total: </b>' + total + "€ </span></td></tr>";
+    cad += '<b>Total: </b>' + total.toFixed(2) + "€ </span></td></tr>";
 
     cad += "</tbody>";
     $("#tablaDetalle").html(cad);
