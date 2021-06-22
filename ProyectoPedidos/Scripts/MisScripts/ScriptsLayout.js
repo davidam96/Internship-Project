@@ -83,7 +83,7 @@ function OnShowModalLogin() {
 function desaparece() {
     setTimeout(() => {
         $('#txtLoginIncorrecto').html("");
-    }, 2000);
+    }, 10000);
 }
 
 function displayLogin() {

@@ -221,8 +221,15 @@ function CancelarPedido(codigoPedido) {
                 //Todo ok.
                 tabla.children().each((index, row) => {
                     let fila = $(row);
-                    if (fila.children().eq(1).text() === codigoPedido.toString())
-                        fila.children().eq(4).html('<b class="text-danger">Cancelado</b>');
+                    if (fila.children().eq(1).text() === codigoPedido.toString()) {
+                        let texto = '<span class="text-danger" title="Pedido cancelado en fecha ';
+                            texto += respuesta.Fecha + '"><b>Cancelado</b></span>';
+                        fila.children().eq(4).html(texto);
+
+                        //Tachamos el texto de las casillas del pedido recien cancelado dinamicamente
+                        for (let i = 1; i < (fila.children().length - 1); i++)
+                            fila.children().eq(i).css("text-decoration", "line-through");
+                    }
                 });
 
             }

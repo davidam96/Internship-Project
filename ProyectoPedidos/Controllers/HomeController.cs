@@ -331,10 +331,10 @@ namespace ProyectoPedidos.Controllers
 
                 //Le damos tiempo al usuario para que vea si el login
                 //es incorrecto, antes de que desaparezca dicho mensaje.
-                Thread.Sleep(10000);
+                Thread.Sleep(1000);
 
                 Pedido pedido = ConectorAPI.ModificarPedido(datos);
-
+                var fc = pedido.FechaCancelacionCadena;
                 return Json(new { Fecha = pedido.FechaCancelacionCadena }, JsonRequestBehavior.AllowGet);
 
             }

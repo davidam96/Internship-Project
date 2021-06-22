@@ -276,7 +276,6 @@ function EnviarPedido(codigoPedido) {
                     if (fila.children().eq(1).text() === codigoPedido.toString())
                         fila.children().eq(6).html("<i>" + respuesta.Fecha + "</i>");
                 });
-
             }
             else {
                 alert(respuesta.Error);
