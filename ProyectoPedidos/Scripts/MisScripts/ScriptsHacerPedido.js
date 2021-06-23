@@ -81,36 +81,55 @@ function cargarCombo() {
 }
 
 /** Da de alta un producto en las lineas de detalle. */
-function NuevoProducto() {
+function NuevoProducto(elem) {
 
     //Recogemos la cantidad escrita en el input "txtUnidades"
     var cantidad = $("#txtUnidades").val();
     if (cantidad === undefined || cantidad.trim() === "") {
         alert("Introduzca unidades");
+        $("#txtUnidades").val("");
         return;
     }
 
     //Comprobamos que la cantidad introducida sea válida
     var unidades = parseInt(cantidad);
-    if (Number.isNaN(unidades)) {
+    if (Number.isNaN(unidades) || unidades <= 0) {
         alert("Unidades incorrectas");
+        $("#txtUnidades").val("");
+        return;
     }
+
+    var codigoProducto = $("#cmbProductos").val();
+
+    //Primero comprobamos si ya teniamos el producto
+    let lineaDetalle = undefined;
+    lineasDetalle.forEach((ld) => {
+        if (ld.CodigoProducto === codigoProducto) {
+            lineaDetalle = ld;
+            if ($(elem).attr("id") === "btnAnadir")
+                lineaDetalle.Unidades += unidades; //Añadimos las unidades
+            else
+                lineaDetalle.Unidades = unidades; //Modificamos las unidades
+            return;
+        }
+    });
 
     //Creamos una línea de detalle con el
     //producto escogido y la cantidad escrita
-    var codigoProducto = $("#cmbProductos").val();
-    productos.some((producto) => {
-        if (producto.Codigo === codigoProducto) {
-            let lineaDetalle = {};
-            lineaDetalle.CodigoProducto = producto.Codigo;
-            lineaDetalle.Descripcion = producto.Descripcion;
-            lineaDetalle.Unidades = unidades;
-            lineaDetalle.PrecioVenta = producto.PrecioVenta;
-            lineasDetalle.push(lineaDetalle);
-            return true;
-        }
-        return false;
-    });
+    if (lineaDetalle === undefined) {
+        productos.some((producto) => {
+            lineaDetalle = {};
+            if (producto.Codigo === codigoProducto) {
+                lineaDetalle.CodigoProducto = producto.Codigo;
+                lineaDetalle.Descripcion = producto.Descripcion;
+                lineaDetalle.Unidades = unidades;
+                lineaDetalle.PrecioVenta = producto.PrecioVenta;
+                lineasDetalle.push(lineaDetalle);
+                return true;
+            }
+            return false;
+        });
+    }
 
     //Actualizamos la info de todo el pedido
     CargarTablaLineasDetalle(lineasDetalle);
@@ -120,6 +139,10 @@ function NuevoProducto() {
 
     //Borramos las unidades del pedido anterior
     $("#txtUnidades").val("");
+}
+
+function ModificarProducto(elem) {
+    NuevoProducto(elem);
 }
 
 function EliminarProducto(codigoProducto) {

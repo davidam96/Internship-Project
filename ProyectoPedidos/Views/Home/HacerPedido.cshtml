@@ -19,26 +19,26 @@
     <div class="card-body row d-flex justify-content-center bg-mi-info mx-0 px-5">
 
         @* CONTROLES AÑADIR PRODUCTOS *@
-        <div class="col-12 col-lg-4 text-lg-right px-1 mt-1 mb-2" style="border: 1px solid black;">
+        <div class="col-12 col-lg-4 text-lg-right px-1 mt-1 mb-2">
             <select id="cmbProductos" class="py-1 rounded"></select>
         </div>
-        <div class="col-12 col-lg-3 px-1 mt-1 mb-2" style="border: 1px solid black;">
+        <div class="col-12 col-lg-3 px-1 mt-1 mb-2">
             <input id="txtUnidades" class="pr-3 pr-lg-0 rounded" placeholder="Unidades" />
         </div>
-        <div class="col-12 col-lg-3 d-flex justify-content-center mb-2" style="border: 1px solid black;">
+        <div class="col-12 col-lg-3 d-flex justify-content-center mb-2">
             <button id="btnAnadir" class="btn btn-light border-dark mx-1 px-4"
-                    onclick="NuevoProducto()">
+                    onclick="NuevoProducto(this)">
                 Añadir
             </button>
             <button id="btnModificar" class="btn btn-info border-dark mx-1"
-                    onclick="ModificarProducto()">
+                    onclick="ModificarProducto(this)">
                 Modificar
             </button>
         </div>
 
         @* TABLA LINEAS DETALLE *@
         <div class="table-responsive mb-5">
-            <table id="tablaLineasDetalle" class="table bg-light"></table>
+            <table id="tablaLineasDetalle" class="table bg-light mt-3"></table>
         </div>
 
         @* BOTON HACER PEDIDO *@
