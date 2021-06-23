@@ -113,28 +113,62 @@ function NuevoProducto() {
     });
 
     //Actualizamos la info de todo el pedido
-    var total = 0;
-    var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr>";
-    lineasDetalle.forEach((lineaDetalle) => {
-        cad += "<tr>";
-        cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
-        cad += "<td>" + lineaDetalle.Descripcion + "</td>";
-        cad += "<td>" + lineaDetalle.Unidades + "</td>";
-        cad += "<td>" + lineaDetalle.PrecioVenta + "€ </td>";
-        let subtotal = (parseInt(lineaDetalle.Unidades) * parseFloat(lineaDetalle.PrecioVenta)).toFixed(2);
-        cad += "<td>" + subtotal + "€ </td>";
-        total += parseFloat(subtotal);
-        cad += "</tr>";
-    });
-    cad += '<tr><td colspan="5"><span style="font-size: 28px;">';
-    cad += '<b>Total: </b>' + total.toFixed(2) + "€ </span></td></tr>";
-    $("#tablaLineasDetalle").html(cad);
+    CargarTablaLineasDetalle(lineasDetalle);
 
     //Activamos el boton de hacer pedido
     $("#btnHacerPedido").removeAttr("disabled");
 
     //Borramos las unidades del pedido anterior
     $("#txtUnidades").val("");
+}
+
+function EliminarProducto(codigoProducto) {
+    //Eliminamos la linea de detalle del array 'lineasDetalle',
+    //haciendo uso de la funcion Array.filter()
+    var ldAux = lineasDetalle.filter((lineaDetalle) => {
+        if (lineaDetalle.CodigoProducto !== codigoProducto)
+            return true;
+        else
+            return false;
+    });
+    lineasDetalle = ldAux;
+
+    //Actualizamos la tabla con el producto ya eliminado
+    CargarTablaLineasDetalle(lineasDetalle);
+}
+
+function CargarTablaLineasDetalle(lineasDet) {
+
+    if (lineasDet.length === 0)
+        //Si hemos borrado todos los productos del pedido,
+        //eliminamos el html restante de la tabla.
+        $("#tablaLineasDetalle").html("");
+    else {
+        var total = 0;
+        var cad = "<tr><th>Codigo</th><th>Descripcion</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th><th>Acciones</th></tr>";
+        lineasDet.forEach((lineaDetalle) => {
+            cad += "<tr>";
+            cad += "<td>" + lineaDetalle.CodigoProducto + "</td>";
+            cad += "<td>" + lineaDetalle.Descripcion + "</td>";
+            cad += "<td>" + lineaDetalle.Unidades + "</td>";
+            cad += "<td>" + lineaDetalle.PrecioVenta + "€ </td>";
+            let subtotal = (parseInt(lineaDetalle.Unidades) * parseFloat(lineaDetalle.PrecioVenta)).toFixed(2);
+            cad += "<td>" + subtotal + "€ </td>";
+            total += parseFloat(subtotal);
+
+            //Boton Eliminar Producto
+            cad += "<td>"
+            cad += '<button class="btn btn-danger border-dark rounded" ';
+            cad += 'onclick="EliminarProducto(' + "'" + lineaDetalle.CodigoProducto + "'" + ')" ';
+            cad += '>Eliminar</button>';
+            cad += "</td>"
+
+            cad += "</tr>";
+        });
+        cad += '<tr><td colspan="6"><span style="font-size: 28px;">';
+        cad += '<b>Total: </b>' + total.toFixed(2) + "€ </span></td></tr>";
+        $("#tablaLineasDetalle").html(cad);
+    }
 }
 
 /** Da de alta el pedido en la BBDD */

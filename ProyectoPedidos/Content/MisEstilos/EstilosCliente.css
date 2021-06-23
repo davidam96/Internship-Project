@@ -28,6 +28,10 @@
     border: 3px solid black;
 }
 
+.bg-mi-info {
+    background-color: rgba(23, 162, 184, 0.7);
+}
+
 #tablaPedidos th,
 #tablaPedidos td,
 #tablaLineasDetalle th,

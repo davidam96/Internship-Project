@@ -10,23 +10,29 @@
 }
 
 @* CARD HACER PEDIDO *@
-<div class="card text-white bg-info my-3">
+<div class="card text-white my-3">
 
-    <div class="card-header">
+    <div class="card-header bg-info">
         <h2>Hacer Pedido</h2>
     </div>
 
-    <div class="card-body row pt-4 px-5">
-        @* CONTROLES AÑADIR PRODUCTOS *@
+    <div class="card-body row d-flex justify-content-center bg-mi-info mx-0 px-5">
 
-        <div class="col-12 col-md-6 text-md-right">
-            <select id="cmbProductos" class="py-1 mb-2 rounded"></select>
+        @* CONTROLES AÑADIR PRODUCTOS *@
+        <div class="col-12 col-lg-4 text-lg-right px-1 mt-1 mb-2" style="border: 1px solid black;">
+            <select id="cmbProductos" class="py-1 rounded"></select>
         </div>
-        <div class="col-12 col-md-6 text-md-left">
-            <input id="txtUnidades" class="mb-3 rounded" placeholder="Unidades" />
-            <button id="btnAnadir" class="btn btn-light border-dark mb-2 py-1"
+        <div class="col-12 col-lg-3 px-1 mt-1 mb-2" style="border: 1px solid black;">
+            <input id="txtUnidades" class="pr-3 pr-lg-0 rounded" placeholder="Unidades" />
+        </div>
+        <div class="col-12 col-lg-3 d-flex justify-content-center mb-2" style="border: 1px solid black;">
+            <button id="btnAnadir" class="btn btn-light border-dark mx-1 px-4"
                     onclick="NuevoProducto()">
                 Añadir
+            </button>
+            <button id="btnModificar" class="btn btn-info border-dark mx-1"
+                    onclick="ModificarProducto()">
+                Modificar
             </button>
         </div>
 
